@@ -1,8 +1,11 @@
 //  src\components\TranscriptSearch.tsx
 
+// src/components/TranscriptSearch.tsx
+
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { getOrCreateGuestId } from "@/utils/guestId";
 import SearchBar from "./SearchBar";
 
 type CachedTranscript = {
@@ -12,19 +15,24 @@ type CachedTranscript = {
 };
 
 type TranscriptSearchProps = {
-  guestId?: string;
   userId?: string | null;
 };
 
-export default function TranscriptSearch({
-  guestId,
-  userId = null,
-}: TranscriptSearchProps) {
+export default function TranscriptSearch({ userId = null }: TranscriptSearchProps) {
+  const [guestId, setGuestId] = useState<string | null>(null);
   const [transcript, setTranscript] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [videoUrl, setVideoUrl] = useState("");
   const [videoTitle, setVideoTitle] = useState<string | null>(null);
+
+  // Ensure guestId is generated only on the client
+  useEffect(() => {
+    if (!userId) {
+      const id = getOrCreateGuestId();
+      setGuestId(id);
+    }
+  }, [userId]);
 
   function getCacheKey(url: string) {
     if (userId) return `user_transcript_cache_${userId}_${url}`;
@@ -33,6 +41,11 @@ export default function TranscriptSearch({
   }
 
   async function fetchTranscript(url: string) {
+    if (!userId && !guestId) {
+      // Still initializing guestId
+      return;
+    }
+
     setLoading(true);
     setError(null);
     setTranscript(null);
