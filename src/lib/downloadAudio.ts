@@ -1,8 +1,8 @@
-import { ytDlpClient } from './ytDlpClient';
-import { ffmpegPath } from './ffmpegPath';
 import path from 'path';
 import { tmpdir } from 'os';
 import { randomUUID } from 'crypto';
+import { ffmpegPath } from './ffmpegPath';
+import { runYtDlp } from './ytDlpClient'; // spawn-based runner
 
 export async function downloadYouTubeAudio(url: string): Promise<string> {
   const filename = `${randomUUID()}.mp3`;
@@ -13,14 +13,15 @@ export async function downloadYouTubeAudio(url: string): Promise<string> {
   console.log(`[yt-dlp] ffmpeg: ${ffmpegPath}`);
 
   try {
-    await ytDlpClient(url, {
-      extractAudio: true,
-      audioFormat: 'mp3',
-      output: filepath,
-      ffmpegLocation: ffmpegPath,
-      quiet: true,
-      noWarnings: true,
-    });
+    await runYtDlp([
+      url,
+      '--extract-audio',
+      '--audio-format', 'mp3',
+      '--output', filepath,
+      '--ffmpeg-location', ffmpegPath,
+      '--quiet',
+      '--no-warnings',
+    ]);
 
     console.log(`[yt-dlp] Saved to: ${filepath}`);
     return filepath;
@@ -30,16 +31,16 @@ export async function downloadYouTubeAudio(url: string): Promise<string> {
   }
 }
 
-// --- Added this function to fix the missing import error ---
 export async function getYouTubeMetadata(url: string): Promise<any> {
   try {
-    const result = await ytDlpClient(url, {
-      dumpSingleJson: true,
-      skipDownload: true,
-      quiet: true,
-    });
+    const output = await runYtDlp([
+      url,
+      '--dump-single-json',
+      '--skip-download',
+      '--quiet',
+    ]);
 
-    return result;
+    return JSON.parse(output);
   } catch (err) {
     console.error(`[yt-dlp] Metadata fetch failed:`, err);
     throw err;
