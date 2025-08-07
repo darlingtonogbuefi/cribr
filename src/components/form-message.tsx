@@ -1,8 +1,9 @@
 // src\components\form-message.tsx
 
-
-// src/components/form-message.tsx
 import type { Message } from "@/types/message";
+
+// Re-export the type so it can be imported from this file
+export type { Message };
 
 export function FormMessage({ message }: { message: Message }) {
   let className = "border-l-2 px-4 ";
