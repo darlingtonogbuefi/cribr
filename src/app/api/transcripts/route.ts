@@ -1,3 +1,6 @@
+//  src\app\api\transcripts\route.ts
+
+
 import { NextResponse } from 'next/server'
 import { createClient } from '../../../../supabase/server'
 import { extractVideoId } from '@/lib/transcript/extractVideoId'
@@ -12,7 +15,11 @@ export async function POST(request: Request) {
   try {
     const { url, guestId } = await request.json()
 
-    if (!url || typeof url !== 'string' || (!url.includes('youtube.com') && !url.includes('youtu.be'))) {
+    if (
+      !url ||
+      typeof url !== 'string' ||
+      (!url.includes('youtube.com') && !url.includes('youtu.be'))
+    ) {
       return NextResponse.json({ error: 'Invalid YouTube URL' }, { status: 400 })
     }
 
@@ -23,7 +30,7 @@ export async function POST(request: Request) {
 
     const videoId = extractVideoId(url)
 
-    // Check if transcript exists first
+    // Check if transcript already exists
     let existingArray
     if (user?.id) {
       const { data } = await supabase
@@ -84,6 +91,18 @@ export async function POST(request: Request) {
     return NextResponse.json({ transcript, metadata, source })
   } catch (error: any) {
     console.error('Transcription failed:', error.message)
+
+    const message = error?.message || ''
+
+    if (message.includes('violates row-level security policy')) {
+      return NextResponse.json(
+        {
+          error: 'Guest transcript limit reached. To continue transcribing, please create an account or log in.',
+        },
+        { status: 403 }
+      )
+    }
+
     return NextResponse.json({ error: 'Transcription failed' }, { status: 500 })
   }
 }
