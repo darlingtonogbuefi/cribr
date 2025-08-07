@@ -97,7 +97,7 @@ export async function POST(request: Request) {
     if (message.includes('violates row-level security policy')) {
       return NextResponse.json(
         {
-          error: 'Guest transcript limit reached. To continue transcribing, please create an account or log in.',
+          error: 'Guest transcript limit reached. To continue transcribing, please create an account or Sign in.',
         },
         { status: 403 }
       )
