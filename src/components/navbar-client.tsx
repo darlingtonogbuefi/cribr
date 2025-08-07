@@ -18,7 +18,7 @@ export default function NavbarClient({ user }: { user: User | null }) {
             fontFamily: "'Segoe UI', Tahoma, Geneva, Verdana, sans-serif",
           }}
         >
-          xcribr
+          cribr
         </Link>
 
         <div className="flex gap-4 items-center">
