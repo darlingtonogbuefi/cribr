@@ -1,7 +1,14 @@
 import { NextResponse } from 'next/server';
 import youtubedl from 'youtube-dl-exec';
 
-const ytDlp = youtubedl.create('C:/tools/yt-dlp/yt-dlp.exe');
+type VideoInfo = {
+  title: string;
+  channel?: string;
+  thumbnail?: string;
+  view_count: number;
+  like_count?: number;
+  upload_date?: string;
+};
 
 export async function POST(req: Request) {
   const { url } = await req.json();
@@ -11,16 +18,17 @@ export async function POST(req: Request) {
   }
 
   try {
-    const info = await ytDlp(url, {
+    const info = await youtubedl(url, {
       dumpSingleJson: true,
       noWarnings: true,
       skipDownload: true,
-    });
+      executablePath: 'C:/tools/yt-dlp/yt-dlp.exe',
+    }) as unknown as VideoInfo;
 
     const result = {
       title: info.title,
-      channel: info.channel,
-      thumbnail: info.thumbnail,
+      channel: info.channel ?? '',
+      thumbnail: info.thumbnail ?? '',
       views: info.view_count.toLocaleString(),
       likes: info.like_count?.toLocaleString() || '0',
       date: info.upload_date
