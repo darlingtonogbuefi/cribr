@@ -24,12 +24,6 @@ export const updateSession = async (request: NextRequest) => {
           },
           setAll(cookiesToSet) {
             cookiesToSet.forEach(({ name, value, options }) => {
-              request.cookies.set(name, value);
-              response = NextResponse.next({
-                request: {
-                  headers: request.headers,
-                },
-              });
               response.cookies.set(name, value, options);
             });
           },
@@ -42,7 +36,6 @@ export const updateSession = async (request: NextRequest) => {
       error,
     } = await supabase.auth.getUser();
 
-    // Optional route guarding
     if (request.nextUrl.pathname.startsWith("/dashboard") && error) {
       return {
         response: NextResponse.redirect(new URL("/sign-in", request.url)),

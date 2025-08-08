@@ -34,6 +34,25 @@ export default function AuthCallbackPage() {
     };
 
     handleRedirect();
+
+    // Listen for auth state changes to react if session changes
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => {
+      if (session) {
+        setStatus('success');
+        window.history.replaceState({}, document.title, '/dashboard');
+
+        setTimeout(() => {
+          router.push('/dashboard');
+        }, 1500);
+      } else {
+        setStatus('error');
+        setErrorMessage('Authentication failed or session expired. Please sign in again.');
+      }
+    });
+
+    return () => {
+      subscription.unsubscribe();
+    };
   }, [router]);
 
   return (
