@@ -5,8 +5,8 @@ import { TranscriptIOProvider } from "./providers/TranscriptIOProvider";
 import { AssemblyAIProvider } from "./providers/AssemblyAIProvider";
 
 const providers: TranscriptProvider[] = [
-  //new TranscriptIOProvider(), // First provider to try 
-  //new DumplingAIProvider(),    
+  new TranscriptIOProvider(), // First provider to try 
+  new DumplingAIProvider(),    
   new AssemblyAIProvider(),
 ];
 
