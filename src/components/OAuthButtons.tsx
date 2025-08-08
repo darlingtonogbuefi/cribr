@@ -1,6 +1,7 @@
 //  src\components\OAuthButtons.tsx
 
 
+// src/components/OAuthButtons.tsx
 'use client';
 
 import { supabase } from '@/lib/supabaseClient';
@@ -8,8 +9,8 @@ import { FaGoogle, FaGithub, FaFacebook } from 'react-icons/fa';
 
 export function OAuthButtons() {
   const handleOAuthSignIn = async (provider: 'google' | 'github' | 'facebook') => {
-    const redirectHost = process.env.NEXT_PUBLIC_AUTH_REDIRECT_URL || location.origin;
-
+    const redirectHost = process.env.NEXT_PUBLIC_AUTH_REDIRECT_URL!;
+    
     const { error } = await supabase.auth.signInWithOAuth({
       provider,
       options: {
