@@ -1,6 +1,7 @@
 // src/app/dashboard/page.tsx
 
-import DashboardNavbar from "@/components/dashboard-navbar";
+// src/app/dashboard/page.tsx
+
 import { InfoIcon, UserCircle, Download } from "lucide-react";
 import { redirect } from "next/navigation";
 import { createServerSupabaseClient } from "@/lib/supabaseServer";
@@ -34,7 +35,7 @@ export default async function Dashboard() {
 
   return (
     <>
-      <DashboardNavbar />
+      {/* Navbar removed here - use global navbar from layout */}
       <main className="w-full">
         <div className="container mx-auto px-4 py-8 flex flex-col gap-8">
           {/* Header Section */}
