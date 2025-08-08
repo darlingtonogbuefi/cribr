@@ -8,7 +8,7 @@ import { useState } from "react";
 
 interface SearchBarProps {
   onSubmit: (url: string) => void;
-  onClear: () => void; // required to avoid runtime error
+  onClear: () => void;
 }
 
 export default function SearchBar({ onSubmit, onClear }: SearchBarProps) {
@@ -21,32 +21,35 @@ export default function SearchBar({ onSubmit, onClear }: SearchBarProps) {
   };
 
   const handleClear = () => {
-    setUrl(""); // clear input field
-    onClear();  // notify parent to reset cache & states
+    setUrl("");
+    onClear();
   };
 
   return (
-    <form onSubmit={handleSubmit} className="max-w-xl mx-auto flex gap-2">
+    <form onSubmit={handleSubmit} className="max-w-xl mx-auto flex flex-col gap-3">
       <input
         type="text"
         placeholder="Enter YouTube video, playlist, or channel URL"
-        className="flex-grow rounded border border-gray-300 px-4 py-2"
+        className="rounded border border-gray-300 px-4 py-2"
         value={url}
         onChange={(e) => setUrl(e.target.value)}
       />
-      <button
-        type="submit"
-        className="bg-red-600 text-white px-6 rounded hover:bg-red-700 transition"
-      >
-        Get Transcript
-      </button>
-      <button
-        type="button"
-        onClick={handleClear}
-        className="bg-gray-400 text-white px-4 rounded hover:bg-gray-500 transition"
-      >
-        Reset
-      </button>
+
+      <div className="flex gap-2 justify-center">
+        <button
+          type="submit"
+          className="bg-red-600 text-white px-6 rounded hover:bg-red-700 transition"
+        >
+          Get Transcript
+        </button>
+        <button
+          type="button"
+          onClick={handleClear}
+          className="bg-gray-400 text-white px-4 rounded hover:bg-gray-500 transition"
+        >
+          Reset
+        </button>
+      </div>
     </form>
   );
 }
