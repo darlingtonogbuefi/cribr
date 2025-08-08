@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import Image from "next/image";
 import { createClient } from "@/lib/supabaseClient";
 import {
   DropdownMenu,
@@ -33,15 +34,15 @@ export default function DashboardNavbar() {
 
   return (
     <nav className="w-full border-b border-gray-200 bg-white py-4">
-      <div className="w-full px-4 flex justify-between items-center">
-        <Link
-          href="/"
-          className="text-3xl font-bold text-gray-800"
-          style={{
-            fontFamily: "'Segoe UI', Tahoma, Geneva, Verdana, sans-serif",
-          }}
-        >
-          cribr
+      <div className="w-full px-24 flex justify-between items-center">
+        <Link href="/" prefetch className="inline-flex items-center">
+          <Image
+            src="/cribr-logo.jpg"
+            alt="Cribr Logo"
+            width={75}
+            height={18}
+            priority
+          />
         </Link>
         <div className="flex gap-4 items-center">
           <DropdownMenu>
