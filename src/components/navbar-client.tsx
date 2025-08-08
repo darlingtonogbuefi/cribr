@@ -1,24 +1,25 @@
 // src/components/navbar-client.tsx
+
 "use client";
 
 import Link from "next/link";
+import Image from "next/image";
 import { Button } from "./ui/button";
 import UserProfile from "./user-profile";
 import type { User } from "@supabase/supabase-js";
 
 export default function NavbarClient({ user }: { user: User | null }) {
   return (
-    <nav className="w-full border-b border-gray-200 bg-white py-2">
-      <div className="w-full px-4 flex justify-between items-center">
-        <Link
-          href="/"
-          prefetch
-          className="text-3xl font-bold text-gray-800 hover:text-gray-900"
-          style={{
-            fontFamily: "'Segoe UI', Tahoma, Geneva, Verdana, sans-serif",
-          }}
-        >
-          cribr
+    <nav className="w-full border-b border-gray-200 bg-white py-4">
+      <div className="w-full px-24 flex justify-between items-center">
+        <Link href="/" prefetch className="inline-flex items-center">
+          <Image
+            src="/cribr-logo.jpg"
+            alt="Cribr Logo"
+            width={75}
+            height={18}
+            priority
+          />
         </Link>
 
         <div className="flex gap-4 items-center">
