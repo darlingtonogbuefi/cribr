@@ -1,48 +1,26 @@
 import path from 'path';
 import { tmpdir } from 'os';
 import { randomUUID } from 'crypto';
-import { ffmpegPath } from './ffmpegPath';
-import { runYtDlp } from './ytDlpClient'; // spawn-based runner
 
+// Stub: downloadYouTubeAudio without yt-dlp
 export async function downloadYouTubeAudio(url: string): Promise<string> {
-  const filename = `${randomUUID()}.mp3`;
-  const filepath = path.join(tmpdir(), filename);
+  console.warn('[yt-dlp removed] Skipping audio download for:', url);
 
-  console.log(`[yt-dlp] URL: ${url}`);
-  console.log(`[yt-dlp] Temp path: ${filepath}`);
-  console.log(`[yt-dlp] ffmpeg: ${ffmpegPath}`);
-
-  try {
-    await runYtDlp([
-      url,
-      '--extract-audio',
-      '--audio-format', 'mp3',
-      '--output', filepath,
-      '--ffmpeg-location', ffmpegPath,
-      '--quiet',
-      '--no-warnings',
-    ]);
-
-    console.log(`[yt-dlp] Saved to: ${filepath}`);
-    return filepath;
-  } catch (err) {
-    console.error(`[yt-dlp] Failed:`, err);
-    throw err;
-  }
+  // Generate a fake audio path (not used, but returned for compatibility)
+  const fakePath = path.join(tmpdir(), `${randomUUID()}.mp3`);
+  return fakePath;
 }
 
+// Stub: getYouTubeMetadata without yt-dlp
 export async function getYouTubeMetadata(url: string): Promise<any> {
-  try {
-    const output = await runYtDlp([
-      url,
-      '--dump-single-json',
-      '--skip-download',
-      '--quiet',
-    ]);
+  console.warn('[yt-dlp removed] Skipping metadata fetch for:', url);
 
-    return JSON.parse(output);
-  } catch (err) {
-    console.error(`[yt-dlp] Metadata fetch failed:`, err);
-    throw err;
-  }
+  // Return fallback metadata
+  return {
+    title: 'Unknown Title',
+    channel: 'Unknown Channel',
+    thumbnail: null,
+    views: 0,
+    date: null,
+  };
 }
