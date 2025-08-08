@@ -7,7 +7,7 @@ import { AssemblyAIProvider } from "./providers/AssemblyAIProvider";
 const providers: TranscriptProvider[] = [
   new TranscriptIOProvider(), // First provider to try 
   new DumplingAIProvider(),    
-  new AssemblyAIProvider(),
+  //new AssemblyAIProvider(),
 ];
 
 export async function getTranscriptFromProviders(videoId: string, url: string) {
