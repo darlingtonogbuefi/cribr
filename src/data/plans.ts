@@ -19,9 +19,9 @@ export const plans: Plan[] = [
     enhancedDescription:
       "Get started with basic features to explore the service without any cost.",
     features: [
-      "Extract 10 transcripts/mo",
-      "Limited formats: TXT only",
-      "No chat with videos",
+      "Extract 2 transcripts/day",
+      "Export in TXT, SRT, MD and CSV formats",
+      "No transcript history",
     ],
     buttonText: "Current Plan",
     buttonStyle: "bg-gray-200 text-gray-700",
@@ -35,12 +35,11 @@ export const plans: Plan[] = [
     enhancedDescription:
       "Weekly access for consistent content creation with upgraded export formats.",
     features: [
-      "100 Transcribed videos",
-      "AI-generated video summaries",
-      "Export in TXT, PDF, and CSV formats",
-      "Whisper AI engine for accurate transcripts",
+      "1000 Transcribed videos/Month",
+      "Bulk/Channel transcript downloads",
+      "Export in TXT, SRT, MD and CSV formats",
+      "AI engine for accurate transcripts",
       "View & manage last 30 days of transcripts",
-      "Upload audio files (MP3/WAV)",
       "Standard email support",
     ],
     buttonText: "Start Weekly Plan",
@@ -56,14 +55,12 @@ export const plans: Plan[] = [
     enhancedDescription:
       "Unlimited transcript history, advanced exports, and priority access for busy pros.",
     features: [
-      "Transcribe up to 2 hours per video",
-      "GPT-4 powered summaries (optional)",
+      "5000 Transcribed videos/Month",
+      "Bulk/Channel transcript downloads",
       "Export in TXT, PDF, CSV, JSON, and SRT",
-      "Faster transcription queues",
-      "Unlimited transcript history",
+      "View & manage last 90 days of transcripts",
       "Custom timestamp segmentation",
-      "Upload YouTube or audio files",
-      "Priority support",
+      "Phone and Email Priority support",
     ],
     buttonText: "Start Monthly Plan",
     buttonStyle: "bg-purple-700 text-white",

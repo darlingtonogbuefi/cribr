@@ -1,11 +1,8 @@
 // src/app/dashboard/page.tsx
 
-//   src\app\dashboard\page.tsx
-
-import DashboardNavbar from "@/components/dashboard-navbar";
 import { InfoIcon, UserCircle, Download } from "lucide-react";
 import { redirect } from "next/navigation";
-import { createClient } from "../../../supabase/server";
+import { createServerSupabaseClient } from "@/lib/supabaseServer";
 import Link from "next/link";
 
 // Helper function to safely format dates
@@ -14,7 +11,7 @@ function formatDate(value?: string | null) {
 }
 
 export default async function Dashboard() {
-  const supabase = await createClient();
+  const supabase = createServerSupabaseClient();
 
   const {
     data: { user },
@@ -36,10 +33,9 @@ export default async function Dashboard() {
 
   return (
     <>
-      <DashboardNavbar />
+      {/* Navbar removed here - use global navbar from layout */}
       <main className="w-full">
         <div className="container mx-auto px-4 py-8 flex flex-col gap-8">
-
           {/* Header Section */}
           <header className="flex flex-col gap-4">
             <h1 className="text-3xl font-bold">Dashboard</h1>
