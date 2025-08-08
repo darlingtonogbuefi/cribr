@@ -32,5 +32,6 @@ declare global {
     }
 
     handleSignInWithGoogle?: (response: any) => void
+    handleSignUpWithGoogle?: (response: any) => void
   }
 }

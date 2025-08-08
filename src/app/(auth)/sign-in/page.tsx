@@ -1,34 +1,25 @@
 "use client"
 
 import { useEffect, useRef } from "react"
-import { useRouter } from "next/navigation"
 import Link from "next/link"
-import { createClient } from "../../../lib/supabaseClient"
-
-const supabase = createClient()
+import { signInWithGoogleIdToken } from "@/app/actions"
 
 export default function SignInPage() {
-  const router = useRouter()
   const googleDivRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
+    // Called by Google Identity Services after sign-in
     window.handleSignInWithGoogle = async (response: any) => {
       const token = response.credential
-
-      const { data, error } = await supabase.auth.signInWithIdToken({
-        provider: "google",
-        token,
-      })
-
-      if (error) {
-        console.error("Supabase sign-in error:", error)
+      try {
+        await signInWithGoogleIdToken(token) // server action (no CORS)
+      } catch (err) {
+        console.error(err)
         alert("Failed to sign in with Google.")
-        return
       }
-
-      router.push("/dashboard")
     }
 
+    // Load Google Identity script if not already loaded
     const scriptId = "google-identity-script"
     if (!document.getElementById(scriptId)) {
       const script = document.createElement("script")
@@ -36,7 +27,7 @@ export default function SignInPage() {
       script.async = true
       script.defer = true
       script.id = scriptId
-      script.onload = () => renderGoogleButton()
+      script.onload = renderGoogleButton
       document.body.appendChild(script)
     } else {
       renderGoogleButton()
@@ -59,7 +50,7 @@ export default function SignInPage() {
         })
       }
     }
-  }, [router])
+  }, [])
 
   return (
     <main style={styles.container}>
@@ -91,7 +82,7 @@ const styles = {
     backgroundColor: "#fafafa",
   },
   box: {
-    border: "2px solid #c8b6ff", // light purple
+    border: "2px solid #c8b6ff",
     borderRadius: 12,
     padding: 32,
     maxWidth: 400,

@@ -1,32 +1,21 @@
 "use client"
 
 import { useEffect, useRef } from "react"
-import { useRouter } from "next/navigation"
 import Link from "next/link"
-import { createClient } from "../../../lib/supabaseClient"
-
-const supabase = createClient()
+import { signInWithGoogleIdToken } from "@/app/actions"
 
 export default function SignUpPage() {
-  const router = useRouter()
   const googleDivRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
-    window.handleSignInWithGoogle = async (response: any) => {
+    window.handleSignUpWithGoogle = async (response: any) => {
       const token = response.credential
-
-      const { data, error } = await supabase.auth.signInWithIdToken({
-        provider: "google",
-        token,
-      })
-
-      if (error) {
-        console.error("Supabase sign-up error:", error)
+      try {
+        await signInWithGoogleIdToken(token) // calls server action
+      } catch (err) {
+        console.error(err)
         alert("Failed to sign up with Google.")
-        return
       }
-
-      router.push("/dashboard")
     }
 
     const scriptId = "google-identity-script"
@@ -36,7 +25,7 @@ export default function SignUpPage() {
       script.async = true
       script.defer = true
       script.id = scriptId
-      script.onload = () => renderGoogleButton()
+      script.onload = renderGoogleButton
       document.body.appendChild(script)
     } else {
       renderGoogleButton()
@@ -46,7 +35,7 @@ export default function SignUpPage() {
       if (window.google && googleDivRef.current) {
         window.google.accounts.id.initialize({
           client_id: process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID!,
-          callback: window.handleSignInWithGoogle!,
+          callback: window.handleSignUpWithGoogle!,
           context: "signup",
         })
 
@@ -59,7 +48,7 @@ export default function SignUpPage() {
         })
       }
     }
-  }, [router])
+  }, [])
 
   return (
     <main style={styles.container}>
@@ -91,7 +80,7 @@ const styles = {
     backgroundColor: "#fafafa",
   },
   box: {
-    border: "2px solid #c8b6ff", // light purple
+    border: "2px solid #c8b6ff",
     borderRadius: 12,
     padding: 32,
     maxWidth: 400,
