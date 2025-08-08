@@ -1,12 +1,11 @@
 //  src\components\TranscriptSearch.tsx
 
-// src/components/TranscriptSearch.tsx
-
 "use client";
 
 import { useEffect, useState } from "react";
 import { getOrCreateGuestId } from "@/utils/guestId";
 import SearchBar from "./SearchBar";
+import YouTubePreviewCard from "./YouTubePreviewCard";
 
 type CachedTranscript = {
   transcript: string;
@@ -25,8 +24,8 @@ export default function TranscriptSearch({ userId = null }: TranscriptSearchProp
   const [error, setError] = useState<string | null>(null);
   const [videoUrl, setVideoUrl] = useState("");
   const [videoTitle, setVideoTitle] = useState<string | null>(null);
+  const [metadata, setMetadata] = useState<any | null>(null);
 
-  // Ensure guestId is generated only on the client
   useEffect(() => {
     if (!userId) {
       const id = getOrCreateGuestId();
@@ -42,7 +41,6 @@ export default function TranscriptSearch({ userId = null }: TranscriptSearchProp
 
   async function fetchTranscript(url: string) {
     if (!userId && !guestId) {
-      // Still initializing guestId
       return;
     }
 
@@ -50,6 +48,7 @@ export default function TranscriptSearch({ userId = null }: TranscriptSearchProp
     setError(null);
     setTranscript(null);
     setVideoTitle(null);
+    setMetadata(null);
     setVideoUrl(url);
 
     const cacheKey = getCacheKey(url);
@@ -59,6 +58,7 @@ export default function TranscriptSearch({ userId = null }: TranscriptSearchProp
         const parsed: CachedTranscript = JSON.parse(cached);
         setTranscript(parsed.transcript);
         setVideoTitle(parsed.metadata?.title || null);
+        setMetadata(parsed.metadata || null);
         setLoading(false);
         return;
       } catch {
@@ -81,6 +81,7 @@ export default function TranscriptSearch({ userId = null }: TranscriptSearchProp
 
       setTranscript(data.transcript);
       setVideoTitle(data.metadata?.title || null);
+      setMetadata(data.metadata || null);
 
       localStorage.setItem(cacheKey, JSON.stringify(data));
     } catch (err: any) {
@@ -94,6 +95,7 @@ export default function TranscriptSearch({ userId = null }: TranscriptSearchProp
     setTranscript(null);
     setError(null);
     setVideoTitle(null);
+    setMetadata(null);
     setVideoUrl("");
   }
 
@@ -140,6 +142,7 @@ export default function TranscriptSearch({ userId = null }: TranscriptSearchProp
           </div>
         )}
 
+        {/* Transcript preview above */}
         {transcript && (
           <section className="mt-8 max-w-3xl mx-auto">
             <h2 className="text-xl font-semibold mb-4">
@@ -162,6 +165,20 @@ export default function TranscriptSearch({ userId = null }: TranscriptSearchProp
               ))}
             </div>
           </section>
+        )}
+
+        {/* YouTube preview below transcript */}
+        {metadata && (
+          <div className="mt-8 max-w-3xl mx-auto">
+            <YouTubePreviewCard
+              title={metadata.title}
+              channel={metadata.channel}
+              thumbnail={metadata.thumbnail}
+              views={metadata.views}
+              likes={metadata.likes}
+              date={metadata.date}
+            />
+          </div>
         )}
       </div>
     </section>
