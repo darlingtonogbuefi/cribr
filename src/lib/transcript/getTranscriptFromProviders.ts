@@ -4,7 +4,7 @@
 import { TranscriptProvider } from "./providers/TranscriptProvider";
 import { DumplingAIProvider } from "./providers/DumplingAIProvider";
 import { TranscriptIOProvider } from "./providers/TranscriptIOProvider";
-import { AssemblyAIProvider } from "./providers/AssemblyAIProvider";
+//import { AssemblyAIProvider } from "./providers/AssemblyAIProvider";
 
 const providers: TranscriptProvider[] = [
   new TranscriptIOProvider(), // First provider to try 
