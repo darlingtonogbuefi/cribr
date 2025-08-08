@@ -1,107 +1,122 @@
-// src\app\(auth)\sign-in\page.tsx
+"use client"
 
-import { signInAction } from "@/app/actions";
-import { FormMessage } from "@/components/form-message";
-import type { Message } from "@/types/message";
-import Navbar from "@/components/navbar";
-import { SubmitButton } from "@/components/submit-button";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import Link from "next/link";
-import { OAuthButtons } from "@/components/OAuthButtons";
+import { useEffect, useRef } from "react"
+import { useRouter } from "next/navigation"
+import Link from "next/link"
+import { createClient } from "../../../lib/supabaseClient"
 
-interface LoginProps {
-  searchParams: { [key: string]: string | string[] | undefined };
-}
+const supabase = createClient()
 
-export default function SignInPage({ searchParams }: LoginProps) {
-  const message: Message | null = searchParams.success
-    ? { type: "success", message: searchParams.success as string }
-    : searchParams.error
-    ? { type: "error", message: searchParams.error as string }
-    : null;
+export default function SignInPage() {
+  const router = useRouter()
+  const googleDivRef = useRef<HTMLDivElement>(null)
+
+  useEffect(() => {
+    window.handleSignInWithGoogle = async (response: any) => {
+      const token = response.credential
+
+      const { data, error } = await supabase.auth.signInWithIdToken({
+        provider: "google",
+        token,
+      })
+
+      if (error) {
+        console.error("Supabase sign-in error:", error)
+        alert("Failed to sign in with Google.")
+        return
+      }
+
+      router.push("/dashboard")
+    }
+
+    const scriptId = "google-identity-script"
+    if (!document.getElementById(scriptId)) {
+      const script = document.createElement("script")
+      script.src = "https://accounts.google.com/gsi/client"
+      script.async = true
+      script.defer = true
+      script.id = scriptId
+      script.onload = () => renderGoogleButton()
+      document.body.appendChild(script)
+    } else {
+      renderGoogleButton()
+    }
+
+    function renderGoogleButton() {
+      if (window.google && googleDivRef.current) {
+        window.google.accounts.id.initialize({
+          client_id: process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID!,
+          callback: window.handleSignInWithGoogle!,
+          context: "signin",
+        })
+
+        window.google.accounts.id.renderButton(googleDivRef.current, {
+          theme: "outline",
+          size: "large",
+          shape: "pill",
+          text: "signin_with",
+          logo_alignment: "left",
+        })
+      }
+    }
+  }, [router])
 
   return (
-    <>
-      <Navbar />
-      <div className="flex min-h-screen flex-col items-center justify-center bg-background px-4 py-8">
-        <div className="w-full max-w-md rounded-lg border border-border bg-card p-6 shadow-sm">
-          <form className="flex flex-col space-y-6" action={signInAction}>
-            <div className="space-y-2 text-center">
-              <h1 className="text-3xl font-semibold tracking-tight">Sign in</h1>
-              <p className="text-sm text-muted-foreground">
-                Don't have an account?{" "}
-                <Link
-                  className="text-primary font-medium hover:underline transition-all"
-                  href="/sign-up"
-                >
-                  Sign up
-                </Link>
-              </p>
-            </div>
+    <main style={styles.container}>
+      <div style={styles.box}>
+        <h1 style={styles.title}>Sign in</h1>
+        <p style={styles.linkText}>
+          Don’t have an account?{" "}
+          <Link href="/sign-up" style={styles.link}>
+            Sign up
+          </Link>
+        </p>
 
-            <div className="space-y-4">
-              <div className="space-y-2">
-                <Label htmlFor="email" className="text-sm font-medium">
-                  Email
-                </Label>
-                <Input
-                  id="email"
-                  name="email"
-                  type="email"
-                  placeholder="you@example.com"
-                  required
-                  className="w-full"
-                />
-              </div>
+        <div ref={googleDivRef} style={{ marginTop: 24 }}></div>
 
-              <div className="space-y-2">
-                <div className="flex justify-between items-center">
-                  <Label htmlFor="password" className="text-sm font-medium">
-                    Password
-                  </Label>
-                  <Link
-                    className="text-xs text-muted-foreground hover:text-foreground hover:underline transition-all"
-                    href="/forgot-password"
-                  >
-                    Forgot Password?
-                  </Link>
-                </div>
-                <Input
-                  id="password"
-                  type="password"
-                  name="password"
-                  placeholder="Your password"
-                  required
-                  className="w-full"
-                />
-              </div>
-            </div>
-
-            <SubmitButton
-              className="w-full"
-              pendingText="Signing in..."
-              formAction={signInAction}
-            >
-              Sign in
-            </SubmitButton>
-
-            {message && (
-              <div aria-live="polite">
-                <FormMessage message={message} />
-              </div>
-            )}
-          </form>
-
-          <div className="flex items-center gap-4 pt-4">
-            <div className="h-px flex-1 bg-border" />
-            <span className="text-xs text-muted-foreground">or continue with</span>
-            <div className="h-px flex-1 bg-border" />
-          </div>
-
-          <OAuthButtons />
-        </div>
+        <p style={styles.note}>
+          We only use Google for authentication. Your Google data is safe and secure.
+        </p>
       </div>
-    </>
-  );
+    </main>
+  )
+}
+
+const styles = {
+  container: {
+    height: "100vh",
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
+    backgroundColor: "#fafafa",
+  },
+  box: {
+    border: "2px solid #c8b6ff", // light purple
+    borderRadius: 12,
+    padding: 32,
+    maxWidth: 400,
+    width: "100%",
+    textAlign: "center" as const,
+    backgroundColor: "white",
+    boxShadow: "0 4px 12px rgba(0,0,0,0.1)",
+  },
+  title: {
+    marginBottom: 8,
+    fontSize: 28,
+    fontWeight: "bold" as const,
+  },
+  linkText: {
+    marginBottom: 24,
+    fontSize: 14,
+  },
+  link: {
+    color: "#7c3aed",
+    textDecoration: "underline",
+    cursor: "pointer",
+  },
+  note: {
+    marginTop: 24,
+    fontSize: 13,
+    color: "#6b7280",
+  },
 }

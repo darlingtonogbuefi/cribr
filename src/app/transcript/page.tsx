@@ -4,23 +4,24 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { supabase } from "@/lib/supabaseClient"; // import the instance, NOT a function
+import { createClient } from "@/lib/supabaseClient"; // Import the factory function
 import GuestTranscriptPage from "./GuestTranscriptPage";
 import AuthenticatedTranscriptPage from "./AuthenticatedTranscriptPage";
 import type { User } from "@supabase/supabase-js";
 
 export default function TranscriptPage() {
+  const supabase = createClient(); // Create supabase client instance here
   const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    // Fetch current user on mount
+    // Get current user on mount
     supabase.auth.getUser().then(({ data }) => {
       setUser(data?.user ?? null);
       setLoading(false);
     });
 
-    // Listen for auth state changes (login/logout)
+    // Listen to auth state changes
     const { data: authListener } = supabase.auth.onAuthStateChange((_event, session) => {
       setUser(session?.user ?? null);
       setLoading(false);
@@ -30,9 +31,11 @@ export default function TranscriptPage() {
     return () => {
       authListener.subscription.unsubscribe();
     };
-  }, []);
+  }, [supabase]);
 
-  if (loading) return <div className="p-8 text-center">Loading...</div>;
+  if (loading) {
+    return <div className="p-8 text-center">Loading...</div>;
+  }
 
   return user ? (
     <AuthenticatedTranscriptPage user={user} />

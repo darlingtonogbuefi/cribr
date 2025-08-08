@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { createClient } from "../../supabase/client";
+import { createClient } from "@/lib/supabaseClient";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -11,10 +11,25 @@ import {
 import { Button } from "./ui/button";
 import { UserCircle } from "lucide-react";
 import { useRouter } from "next/navigation";
+import { useState } from "react";
 
 export default function DashboardNavbar() {
-  const supabase = createClient();
   const router = useRouter();
+  const supabase = createClient();
+  const [loading, setLoading] = useState(false);
+
+  async function handleSignOut() {
+    setLoading(true);
+    const { error } = await supabase.auth.signOut();
+    setLoading(false);
+
+    if (error) {
+      alert("Error signing out: " + error.message);
+      return;
+    }
+
+    router.push("/sign-in");
+  }
 
   return (
     <nav className="w-full border-b border-gray-200 bg-white py-4">
@@ -31,18 +46,13 @@ export default function DashboardNavbar() {
         <div className="flex gap-4 items-center">
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
-              <Button variant="ghost" size="icon">
+              <Button variant="ghost" size="icon" disabled={loading}>
                 <UserCircle className="h-6 w-6" />
               </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end">
-              <DropdownMenuItem
-                onClick={async () => {
-                  await supabase.auth.signOut();
-                  router.refresh();
-                }}
-              >
-                Sign out
+              <DropdownMenuItem onClick={handleSignOut} disabled={loading}>
+                {loading ? "Signing out..." : "Sign out"}
               </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>

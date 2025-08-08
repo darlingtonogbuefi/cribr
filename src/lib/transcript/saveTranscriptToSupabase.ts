@@ -1,6 +1,6 @@
 // src/lib/transcript/saveTranscriptToSupabase.ts
 
-import { createClient } from '../../../supabase/server'
+import { createServerSupabaseClient } from '@/lib/supabaseServer'
 
 type Metadata = {
   title: string
@@ -29,10 +29,9 @@ export async function saveTranscriptToSupabase({
   transcript,
   source,
 }: SaveTranscriptParams) {
-  const supabase = createClient()
+  const supabase = createServerSupabaseClient()
 
   if (userId) {
-    // Insert transcript owned by user (no guest_id)
     const { error } = await supabase.from('transcripts').insert({
       user_id: userId,
       video_id: videoId,
@@ -53,7 +52,7 @@ export async function saveTranscriptToSupabase({
     if (!guestId) {
       throw new Error('guestId is required when userId is null')
     }
-    // Insert transcript owned by guest
+
     const { error } = await supabase.from('transcripts').insert({
       guest_id: guestId,
       video_id: videoId,

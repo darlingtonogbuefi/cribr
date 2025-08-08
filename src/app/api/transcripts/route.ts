@@ -2,7 +2,7 @@
 
 
 import { NextResponse } from "next/server";
-import { createClient } from "../../../../supabase/server";
+import { createServerSupabaseClient } from "@/lib/supabaseServer";  // fixed import
 import { extractVideoId } from "@/lib/transcript/extractVideoId";
 import { getYouTubeMetadata } from "@/lib/fetchYouTubeMetadata";
 import { getTranscriptFromProviders } from "@/lib/transcript/getTranscriptFromProviders";
@@ -23,7 +23,8 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: "Invalid YouTube URL" }, { status: 400 });
     }
 
-    const supabase = createClient();
+    const supabase = createServerSupabaseClient(); // use server client here
+
     const {
       data: { user },
     } = await supabase.auth.getUser();
@@ -62,7 +63,7 @@ export async function POST(request: Request) {
           channel: existing.video_channel,
           thumbnail: existing.video_thumbnail,
           views: existing.video_views,
-          likes: existing.video_likes, // optional, include if stored
+          likes: existing.video_likes,
           date: existing.video_date,
         },
         source: existing.transcript_source,

@@ -2,7 +2,6 @@
 
 import Footer from "@/components/footer";
 import Hero from "@/components/hero";
-import Navbar from "@/components/navbar";
 import PricingSection from "@/components/PricingSection";
 import {
   ArrowUpRight,
@@ -21,7 +20,8 @@ export default async function Home() {
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-white to-gray-50">
-      <Navbar />
+      {/* Navbar removed here */}
+
       <Hero userId={user?.id ?? null} />
 
       {/* Features Section */}
