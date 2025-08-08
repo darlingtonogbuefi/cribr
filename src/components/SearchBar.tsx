@@ -26,7 +26,10 @@ export default function SearchBar({ onSubmit, onClear }: SearchBarProps) {
   };
 
   return (
-    <form onSubmit={handleSubmit} className="max-w-xl mx-auto flex flex-col gap-3">
+    <form
+      onSubmit={handleSubmit}
+      className="max-w-xl mx-auto flex flex-col gap-3"
+    >
       <input
         type="text"
         placeholder="Enter YouTube video, playlist, or channel URL"
@@ -38,14 +41,15 @@ export default function SearchBar({ onSubmit, onClear }: SearchBarProps) {
       <div className="flex gap-2 justify-center">
         <button
           type="submit"
-          className="bg-red-600 text-white px-6 rounded hover:bg-red-700 transition"
+          className="w-40 bg-red-600 text-white rounded-full px-4 py-1 hover:bg-red-700 transition"
         >
           Get Transcript
         </button>
+
         <button
           type="button"
           onClick={handleClear}
-          className="bg-gray-400 text-white px-4 rounded hover:bg-gray-500 transition"
+          className="w-40 bg-gray-200 text-gray-700 rounded-full px-4 py-1 hover:bg-gray-300 transition"
         >
           Reset
         </button>
