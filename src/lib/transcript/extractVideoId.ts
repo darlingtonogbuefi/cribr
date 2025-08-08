@@ -1,3 +1,5 @@
+// src\lib\transcript\extractVideoId.ts
+
 export function extractVideoId(url: string): string {
   const cleanUrl = url.split("?")[0];
   const regex = /(?:youtube\.com\/(?:watch\?v=|shorts\/)|youtu\.be\/)([a-zA-Z0-9_-]{11})/;
