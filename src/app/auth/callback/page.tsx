@@ -13,7 +13,9 @@ export default function AuthCallbackPage() {
 
   useEffect(() => {
     const handleRedirect = async () => {
-      const { data, error } = await supabase.auth.getSessionFromUrl(); // ✅ Safe to use
+      // Supabase SDK parses the URL automatically after redirect
+      // Just get the current session:
+      const { data, error } = await supabase.auth.getSession();
 
       if (error || !data?.session) {
         setStatus('error');
@@ -23,10 +25,9 @@ export default function AuthCallbackPage() {
 
       setStatus('success');
 
-      // Clean URL
+      // Clean URL by removing auth query params
       window.history.replaceState({}, document.title, '/dashboard');
 
-      // Redirect after a moment
       setTimeout(() => {
         router.push('/dashboard');
       }, 1500);
