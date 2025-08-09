@@ -35,7 +35,7 @@ export default function NavbarClient({ user }: { user: User | null }) {
             <Link href="/#faq" className="hover:text-gray-900">
               FAQ
             </Link>
-            <Link href="/contact" className="hover:text-gray-900">
+            <Link href="/pages/contact" className="hover:text-gray-900">
               Contact Us
             </Link>
           </div>
