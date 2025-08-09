@@ -68,11 +68,17 @@ export function PlanCard({ plan }: PlanCardProps) {
     }
   };
 
+  const normalizedPlanName = plan.name.trim().toLowerCase();
+  const hasPurpleBorder =
+    normalizedPlanName.includes("free") ||
+    normalizedPlanName.includes("basic") ||
+    normalizedPlanName.includes("pro");
+
   return (
     <div
       className={`relative flex flex-col p-8 rounded-2xl shadow-md border justify-between ${
         plan.isFeatured ? "bg-purple-50 shadow-lg" : "bg-white"
-      }`}
+      } ${hasPurpleBorder ? "border-purple-600" : "border-gray-300"}`}
     >
       {plan.discount && <DiscountBadge />}
 

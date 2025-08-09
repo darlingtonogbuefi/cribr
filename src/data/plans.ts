@@ -19,7 +19,7 @@ export const plans: Plan[] = [
     enhancedDescription:
       "Get started with basic features to explore the service without any cost.",
     features: [
-      "Extract 2 transcripts/day",
+      "Extract 2 transcripts/Day",
       "Export in TXT, SRT, MD and CSV formats",
       "No transcript history",
     ],
@@ -30,17 +30,16 @@ export const plans: Plan[] = [
   },
   {
     name: "Basic Plan",
-    price: "£STRIPE_BASIC / week",
+    price: "£STRIPE_BASIC / month",
     description: "Perfect for creators and students.",
     enhancedDescription:
       "Weekly access for consistent content creation with upgraded export formats.",
     features: [
-      "1000 Transcribed videos/Month",
-      "Bulk/Channel transcript downloads",
-      "Export in TXT, SRT, MD and CSV formats",
-      "AI engine for accurate transcripts",
-      "View & manage last 30 days of transcripts",
-      "Standard email support",
+      "All of Free features",
+      "+ 400 Transcribed videos/Mo",
+      "+ Bulk/Channel transcript downloads",
+      "+ last 30 days of transcripts",
+      "+ Standard email support (TAT 48hrs)",
     ],
     buttonText: "Start Weekly Plan",
     buttonStyle: "bg-purple-600 text-white",
@@ -55,12 +54,10 @@ export const plans: Plan[] = [
     enhancedDescription:
       "Unlimited transcript history, advanced exports, and priority access for busy pros.",
     features: [
-      "5000 Transcribed videos/Month",
-      "Bulk/Channel transcript downloads",
-      "Export in TXT, PDF, CSV, JSON, and SRT",
-      "View & manage last 90 days of transcripts",
-      "Custom timestamp segmentation",
-      "Phone and Email Priority support",
+      "All of Basic Plan features",
+      "+ 1000 Transcribed videos/Mo",
+      "+ 90 days of transcript history",
+      "+ Phone and email priority support (TAT 12hrs)",
     ],
     buttonText: "Start Monthly Plan",
     buttonStyle: "bg-purple-700 text-white",

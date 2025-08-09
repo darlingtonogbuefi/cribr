@@ -6,7 +6,7 @@ import type { Metadata } from "next"
 import { cookies, headers } from "next/headers"
 import { updateSession } from "../../supabase/middleware"
 import { ThemeProvider } from "@/components/theme-provider"
-import { TempoInit } from "@/components/tempo-init"
+//import { TempoInit } from "@/components/tempo-init"
 import ClientWrapper from "../components/ClientWrapper"
 
 const inter = Inter({ subsets: ["latin"] })
@@ -41,7 +41,6 @@ export default async function RootLayout({ children }: { children: React.ReactNo
         <ThemeProvider attribute="class" defaultTheme="light" enableSystem disableTransitionOnChange>
           <ClientWrapper>{children}</ClientWrapper>
         </ThemeProvider>
-        <TempoInit />
       </body>
     </html>
   )
