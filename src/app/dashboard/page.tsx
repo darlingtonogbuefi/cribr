@@ -2,7 +2,7 @@
 
 import { InfoIcon, UserCircle, Download } from "lucide-react";
 import { redirect } from "next/navigation";
-import { createServerSupabaseClient } from "@/lib/supabaseServer";
+import { createClient } from "../../../supabase/server";
 import Link from "next/link";
 
 // Helper function to safely format dates
@@ -11,7 +11,7 @@ function formatDate(value?: string | null) {
 }
 
 export default async function Dashboard() {
-  const supabase = createServerSupabaseClient();
+  const supabase = await createClient();
 
   const {
     data: { user },
