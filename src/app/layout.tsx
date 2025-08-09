@@ -1,15 +1,19 @@
 // src\app\layout.tsx
 
-import "./globals.css"
-import { Inter } from "next/font/google"
-import type { Metadata } from "next"
-import { cookies, headers } from "next/headers"
-import { updateSession } from "../../supabase/middleware"
-import { ThemeProvider } from "@/components/theme-provider"
-//import { TempoInit } from "@/components/tempo-init"
-import ClientWrapper from "../components/ClientWrapper"
+import "./globals.css";
+import { Inter } from "next/font/google";
+import type { Metadata } from "next";
+import { cookies, headers } from "next/headers";
+import { updateSession } from "../../supabase/middleware";
+import { ThemeProvider } from "@/components/theme-provider";
+// import { TempoInit } from "@/components/tempo-init"
+import ClientWrapper from "../components/ClientWrapper";
 
-const inter = Inter({ subsets: ["latin"] })
+import NavbarClient from "@/components/navbar-client";
+import Footer from "@/components/footer";
+import { createClient } from "../../supabase/server";
+
+const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
   title: "Cribr",
@@ -24,24 +28,39 @@ export const metadata: Metadata = {
     shortcut: "/favicon.ico",
     apple: "/apple-touch-icon.png",
   },
-}
+};
 
 export default async function RootLayout({ children }: { children: React.ReactNode }) {
   const request = {
     cookies: cookies(),
     headers: headers(),
     nextUrl: new URL("http://localhost"),
-  } as any
+  } as any;
 
-  await updateSession(request)
+  await updateSession(request);
+
+  // Create Supabase client and get user for NavbarClient
+  const supabase = await createClient();
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
 
   return (
     <html lang="en" suppressHydrationWarning>
       <body className={inter.className}>
         <ThemeProvider attribute="class" defaultTheme="light" enableSystem disableTransitionOnChange>
-          <ClientWrapper>{children}</ClientWrapper>
+          <ClientWrapper>
+            {/* Navbar with user */}
+            <NavbarClient user={user} />
+
+            {/* Main page content */}
+            <main className="flex-1">{children}</main>
+
+            {/* Footer */}
+            <Footer />
+          </ClientWrapper>
         </ThemeProvider>
       </body>
     </html>
-  )
+  );
 }

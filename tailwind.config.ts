@@ -1,3 +1,7 @@
+//    tailwind.config.ts
+// This file is used to configure Tailwind CSS for the project.
+
+
 import type { Config } from "tailwindcss";
 
 const config = {

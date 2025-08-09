@@ -26,6 +26,9 @@ export default function TranscriptSearch({ userId = null }: TranscriptSearchProp
   const [videoTitle, setVideoTitle] = useState<string | null>(null);
   const [metadata, setMetadata] = useState<any | null>(null);
 
+  // Progress state for the progress bar (0 to 1)
+  const [progress, setProgress] = useState(0);
+
   useEffect(() => {
     if (!userId) {
       const id = getOrCreateGuestId();
@@ -50,6 +53,7 @@ export default function TranscriptSearch({ userId = null }: TranscriptSearchProp
     setVideoTitle(null);
     setMetadata(null);
     setVideoUrl(url);
+    setProgress(0);
 
     const cacheKey = getCacheKey(url);
     const cached = localStorage.getItem(cacheKey);
@@ -73,21 +77,57 @@ export default function TranscriptSearch({ userId = null }: TranscriptSearchProp
         body: JSON.stringify({ url, guestId, userId }),
       });
 
-      const data = await response.json();
-
       if (!response.ok) {
+        const data = await response.json();
         throw new Error(data.error || "Failed to fetch transcript");
       }
 
-      setTranscript(data.transcript);
-      setVideoTitle(data.metadata?.title || null);
-      setMetadata(data.metadata || null);
+      const contentLength = response.headers.get("Content-Length");
+      const total = contentLength ? parseInt(contentLength, 10) : null;
 
-      localStorage.setItem(cacheKey, JSON.stringify(data));
+      if (!response.body || !total) {
+        // fallback: no streaming or no content-length, read fully
+        const data = await response.json();
+        setTranscript(data.transcript);
+        setVideoTitle(data.metadata?.title || null);
+        setMetadata(data.metadata || null);
+        localStorage.setItem(cacheKey, JSON.stringify(data));
+      } else {
+        // Stream and track progress
+        const reader = response.body.getReader();
+        let receivedLength = 0;
+        const chunks = [];
+
+        while (true) {
+          const { done, value } = await reader.read();
+          if (done) break;
+          chunks.push(value);
+          receivedLength += value.byteLength; // use byteLength here
+
+          setProgress(receivedLength / total);
+          console.log(`Progress: ${(receivedLength / total * 100).toFixed(2)}%`);
+        }
+
+        const chunksAll = new Uint8Array(receivedLength);
+        let position = 0;
+        for (let chunk of chunks) {
+          chunksAll.set(chunk, position);
+          position += chunk.byteLength;
+        }
+
+        const resultText = new TextDecoder("utf-8").decode(chunksAll);
+        const data = JSON.parse(resultText);
+
+        setTranscript(data.transcript);
+        setVideoTitle(data.metadata?.title || null);
+        setMetadata(data.metadata || null);
+        localStorage.setItem(cacheKey, JSON.stringify(data));
+      }
     } catch (err: any) {
       setError(err.message || "An error occurred");
     } finally {
       setLoading(false);
+      setProgress(0);
     }
   }
 
@@ -97,12 +137,11 @@ export default function TranscriptSearch({ userId = null }: TranscriptSearchProp
     setVideoTitle(null);
     setMetadata(null);
     setVideoUrl("");
+    setProgress(0);
   }
 
   function downloadLink(format: string) {
-    return `/api/transcripts/download?url=${encodeURIComponent(
-      videoUrl
-    )}&format=${format}`;
+    return `/api/transcripts/download?url=${encodeURIComponent(videoUrl)}&format=${format}`;
   }
 
   return (
@@ -115,34 +154,19 @@ export default function TranscriptSearch({ userId = null }: TranscriptSearchProp
         )}
 
         {loading && (
-          <div className="text-center my-8">
-            <svg
-              className="animate-spin mx-auto h-10 w-10 text-red-600"
-              xmlns="http://www.w3.org/2000/svg"
-              fill="none"
-              viewBox="0 0 24 24"
-            >
-              <circle
-                className="opacity-25"
-                cx="12"
-                cy="12"
-                r="10"
-                stroke="currentColor"
-                strokeWidth="4"
+          <div className="w-full max-w-md mx-auto my-8">
+            <div className="relative w-full h-2 bg-gray-200 rounded overflow-hidden">
+              <div
+                className="absolute left-0 top-0 h-2 bg-red-600 transition-all duration-200"
+                style={{ width: `${progress * 100}%` }}
               />
-              <path
-                className="opacity-75"
-                fill="currentColor"
-                d="M4 12a8 8 0 018-8v8z"
-              />
-            </svg>
-            <p className="mt-4 text-gray-600">
+            </div>
+            <p className="mt-4 text-center text-gray-600">
               Transcribing video, please wait...
             </p>
           </div>
         )}
 
-        {/* Transcript preview above */}
         {transcript && (
           <section className="mt-8 max-w-3xl mx-auto">
             <h2 className="text-xl font-semibold mb-4">
@@ -167,7 +191,6 @@ export default function TranscriptSearch({ userId = null }: TranscriptSearchProp
           </section>
         )}
 
-        {/* YouTube preview below transcript */}
         {metadata && (
           <div className="mt-8 max-w-3xl mx-auto">
             <YouTubePreviewCard

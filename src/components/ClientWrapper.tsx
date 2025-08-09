@@ -1,8 +1,10 @@
+//    src\components\ClientWrapper.tsx
+
+
 "use client"
 
 import { useState, useEffect } from "react"
 import { createClient } from "../lib/supabaseClient"
-import NavbarClient from "./navbar-client"
 import type { User } from "@supabase/supabase-js"
 
 const supabase = createClient()
@@ -24,10 +26,6 @@ export default function ClientWrapper({ children }: { children: React.ReactNode 
     }
   }, [])
 
-  return (
-    <>
-      <NavbarClient user={user} />
-      {children}
-    </>
-  )
+  // No Navbar here anymore!
+  return <>{children}</>
 }

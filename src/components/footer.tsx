@@ -1,3 +1,6 @@
+//   src\components\footer.tsx
+
+
 import Link from "next/link";
 import { Twitter, Linkedin, Github } from "lucide-react";
 
@@ -13,31 +16,22 @@ export default function Footer() {
             <h3 className="font-semibold text-gray-900 mb-4">Product</h3>
             <ul className="space-y-2">
               <li>
-                <Link
-                  href="#features"
-                  className="text-gray-600 hover:text-blue-600"
-                >
+                <Link href="/#features" className="text-gray-600 hover:text-blue-600">
                   Features
                 </Link>
               </li>
               <li>
-                <Link
-                  href="#pricing"
-                  className="text-gray-600 hover:text-blue-600"
-                >
+                <Link href="/#pricing" className="text-gray-600 hover:text-blue-600">
                   Pricing
                 </Link>
               </li>
               <li>
-                <Link
-                  href="/dashboard"
-                  className="text-gray-600 hover:text-blue-600"
-                >
+                <Link href="/dashboard" className="text-gray-600 hover:text-blue-600">
                   Dashboard
                 </Link>
               </li>
               <li>
-                <Link href="#" className="text-gray-600 hover:text-blue-600">
+                <Link href="/pages/api-info" className="text-gray-600 hover:text-blue-600">
                   API
                 </Link>
               </li>
@@ -49,22 +43,22 @@ export default function Footer() {
             <h3 className="font-semibold text-gray-900 mb-4">Company</h3>
             <ul className="space-y-2">
               <li>
-                <Link href="#" className="text-gray-600 hover:text-blue-600">
+                <Link href="/pages/about" className="text-gray-600 hover:text-blue-600">
                   About
                 </Link>
               </li>
               <li>
-                <Link href="#" className="text-gray-600 hover:text-blue-600">
+                <Link href="/pages/blog" className="text-gray-600 hover:text-blue-600">
                   Blog
                 </Link>
               </li>
               <li>
-                <Link href="#" className="text-gray-600 hover:text-blue-600">
+                <Link href="/pages/careers" className="text-gray-600 hover:text-blue-600">
                   Careers
                 </Link>
               </li>
               <li>
-                <Link href="#" className="text-gray-600 hover:text-blue-600">
+                <Link href="/pages/press" className="text-gray-600 hover:text-blue-600">
                   Press
                 </Link>
               </li>
@@ -76,22 +70,22 @@ export default function Footer() {
             <h3 className="font-semibold text-gray-900 mb-4">Resources</h3>
             <ul className="space-y-2">
               <li>
-                <Link href="#" className="text-gray-600 hover:text-blue-600">
+                <Link href="/pages/documentation" className="text-gray-600 hover:text-blue-600">
                   Documentation
                 </Link>
               </li>
               <li>
-                <Link href="#" className="text-gray-600 hover:text-blue-600">
+                <Link href="/pages/help-center" className="text-gray-600 hover:text-blue-600">
                   Help Center
                 </Link>
               </li>
               <li>
-                <Link href="#" className="text-gray-600 hover:text-blue-600">
+                <Link href="/pages/community" className="text-gray-600 hover:text-blue-600">
                   Community
                 </Link>
               </li>
               <li>
-                <Link href="#" className="text-gray-600 hover:text-blue-600">
+                <Link href="/pages/status" className="text-gray-600 hover:text-blue-600">
                   Status
                 </Link>
               </li>
@@ -103,22 +97,22 @@ export default function Footer() {
             <h3 className="font-semibold text-gray-900 mb-4">Legal</h3>
             <ul className="space-y-2">
               <li>
-                <Link href="#" className="text-gray-600 hover:text-blue-600">
+                <Link href="/pages/privacy" className="text-gray-600 hover:text-blue-600">
                   Privacy
                 </Link>
               </li>
               <li>
-                <Link href="#" className="text-gray-600 hover:text-blue-600">
+                <Link href="/pages/terms" className="text-gray-600 hover:text-blue-600">
                   Terms
                 </Link>
               </li>
               <li>
-                <Link href="#" className="text-gray-600 hover:text-blue-600">
+                <Link href="/pages/security" className="text-gray-600 hover:text-blue-600">
                   Security
                 </Link>
               </li>
               <li>
-                <Link href="#" className="text-gray-600 hover:text-blue-600">
+                <Link href="/pages/cookies" className="text-gray-600 hover:text-blue-600">
                   Cookies
                 </Link>
               </li>
@@ -132,15 +126,15 @@ export default function Footer() {
           </div>
 
           <div className="flex space-x-6">
-            <a href="#" className="text-gray-400 hover:text-gray-500">
+            <a href="https://twitter.com/cribrapp" target="_blank" rel="noopener noreferrer" className="text-gray-400 hover:text-gray-500">
               <span className="sr-only">Twitter</span>
               <Twitter className="h-6 w-6" />
             </a>
-            <a href="#" className="text-gray-400 hover:text-gray-500">
+            <a href="https://linkedin.com/company/cribrapp" target="_blank" rel="noopener noreferrer" className="text-gray-400 hover:text-gray-500">
               <span className="sr-only">LinkedIn</span>
               <Linkedin className="h-6 w-6" />
             </a>
-            <a href="#" className="text-gray-400 hover:text-gray-500">
+            <a href="https://github.com/darlingtonogbuefi/cribr" target="_blank" rel="noopener noreferrer" className="text-gray-400 hover:text-gray-500">
               <span className="sr-only">GitHub</span>
               <Github className="h-6 w-6" />
             </a>

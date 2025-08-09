@@ -5,7 +5,7 @@
 "use client";
 
 import { useState } from "react";
-import { Search } from "lucide-react"; // Only Search icon now
+import { Search } from "lucide-react";
 
 interface SearchBarProps {
   onSubmit: (url: string) => void;
@@ -26,12 +26,20 @@ export default function SearchBar({ onSubmit, onClear }: SearchBarProps) {
     onClear();
   };
 
+  const handleBulkTranscribe = () => {
+    const pricingSection = document.getElementById("pricing");
+    if (pricingSection) {
+      pricingSection.scrollIntoView({ behavior: "smooth" });
+    } else {
+      window.location.href = "#pricing";
+    }
+  };
+
   return (
     <form
       onSubmit={handleSubmit}
       className="max-w-xl mx-auto flex flex-col gap-3 items-center"
     >
-      {/* Input container with clickable search icon */}
       <div className="relative w-[800px] max-w-full">
         <input
           type="text"
@@ -54,7 +62,6 @@ export default function SearchBar({ onSubmit, onClear }: SearchBarProps) {
           onChange={(e) => setUrl(e.target.value)}
         />
 
-        {/* Clickable search icon */}
         <button
           type="button"
           onClick={() => handleSubmit()}
@@ -64,13 +71,20 @@ export default function SearchBar({ onSubmit, onClear }: SearchBarProps) {
         </button>
       </div>
 
-      {/* Smaller buttons */}
       <div className="flex gap-2 justify-center">
         <button
           type="submit"
           className="w-32 bg-red-600 text-white rounded-md px-3 py-1 hover:bg-red-700 transition text-sm"
         >
-          Get Transcript
+          Transcribe
+        </button>
+
+        <button
+          type="button"
+          onClick={handleBulkTranscribe}
+          className="w-36 bg-red-600 text-white rounded-md px-3 py-1 hover:bg-red-700 transition text-sm"
+        >
+          Bulk Transcribe
         </button>
 
         <button

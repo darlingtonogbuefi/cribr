@@ -1,14 +1,12 @@
 // src/app/page.tsx
 
-import Footer from "@/components/footer";
 import Hero from "@/components/hero";
 import PricingSection from "@/components/PricingSection";
+import FAQSection from "@/components/FAQSection";
 import {
-  ArrowUpRight,
   NotebookPen,
   Brain,
   Lightbulb,
-  Youtube,
 } from "lucide-react";
 import { createClient } from "../../supabase/server";
 
@@ -20,8 +18,6 @@ export default async function Home() {
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-white to-gray-50">
-      {/* Navbar removed here */}
-
       <Hero userId={user?.id ?? null} />
 
       {/* Features Section */}
@@ -36,96 +32,96 @@ export default async function Home() {
             </p>
           </div>
           <div className="grid md:grid-cols-3 gap-8">
-            {/* Students & Learners */}
+            {/* Learning Support */}
             <div className="p-8 bg-white rounded-xl shadow-sm border border-purple-600">
               <div className="w-12 h-12 flex items-center justify-center rounded-full bg-red-100 mb-6">
                 <NotebookPen className="text-red-600" size={24} />
               </div>
               <p className="text-xs font-semibold uppercase text-gray-400 mb-2">
-                Students & Learners
+                Learning Support
               </p>
               <h3 className="text-xl font-bold mb-4">
-                Your AI Study Partner on YouTube
+                Your Ultimate AI Study Companion on YouTube
               </h3>
               <p className="mb-6 text-gray-700">
-                Master any subject <strong>faster</strong>. Get instant answers
-                from <strong>thousands of hours</strong> of YouTube content.
+                Master any subject faster with instant access to answers from
+                thousands of hours of educational videos.
               </p>
               <ul className="space-y-3 text-gray-600">
                 <li>
-                  🧠 <strong>Build knowledge faster:</strong> Transform entire
-                  educational channels into your personal AI tutor.
+                  🧠 <strong>Accelerate knowledge:</strong> Turn entire
+                  educational channels into your personal AI tutor for faster
+                  comprehension.
                 </li>
                 <li>
-                  📚 <strong>Study smarter:</strong> Turn semester-long lectures
-                  into interactive Q&A sessions.
+                  📚 <strong>Interactive studying:</strong> Transform
+                  semester-long lectures into engaging Q&A sessions tailored to
+                  your needs.
                 </li>
                 <li>
-                  🎯 <strong>Straight to the source:</strong> Get answers with
-                  exact video references and timestamps. No more scrubbing
-                  through videos to find the answer.
+                  🎯 <strong>Precise references:</strong> Get exact video
+                  timestamps and sources for answers—no more endless scrubbing.
                 </li>
               </ul>
             </div>
 
-            {/* YouTubers & Content Creators */}
+            {/* Content Creation */}
             <div className="p-8 bg-white rounded-xl shadow-sm border border-purple-600">
               <div className="w-12 h-12 flex items-center justify-center rounded-full bg-red-100 mb-6">
                 <Lightbulb className="text-red-600" size={24} />
               </div>
               <p className="text-xs font-semibold uppercase text-gray-400 mb-2">
-                YouTubers & Content Creators
+                Content Creation
               </p>
               <h3 className="text-xl font-bold mb-4">
                 Your AI-Powered YouTube Growth Assistant
               </h3>
               <p className="mb-6 text-gray-700">
-                Chat with <strong>successful channels</strong> in your niche.
-                Generate <strong>endless content ideas</strong> and learn what
-                makes videos <strong>go viral</strong>.
+                Collaborate with insights from top creators in your niche.
+                Generate fresh ideas and discover what drives viral success.
               </p>
               <ul className="space-y-3 text-gray-600">
                 <li>
-                  🔥 <strong>Decode virality:</strong> Study viral title
-                  patterns and formats from any channel in your niche.
+                  🔥 <strong>Unlock virality:</strong> Analyze viral titles and
+                  formats from leading channels.
                 </li>
                 <li>
-                  💡 <strong>Content idea machine:</strong> Generate video ideas
-                  based on what already works.
+                  💡 <strong>Idea generator:</strong> Produce endless video
+                  concepts based on proven trends.
                 </li>
                 <li>
-                  ✍️ <strong>Script analysis:</strong> Analyze scripts and
-                  writing styles of your favourite creators.
+                  ✍️ <strong>Script insights:</strong> Study the writing and
+                  scripting styles of your favorite creators.
                 </li>
                 <li>
-                  🔍 <strong>Find content gaps:</strong> Discover untapped
-                  topics your competitors haven't covered yet.
+                  🔍 <strong>Find content gaps:</strong> Uncover untapped topics
+                  your competitors haven’t covered.
                 </li>
               </ul>
             </div>
 
-            {/* Researchers & Developers */}
+            {/* Research */}
             <div className="p-8 bg-white rounded-xl shadow-sm border border-purple-600">
               <div className="w-12 h-12 flex items-center justify-center rounded-full bg-red-100 mb-6">
                 <Brain className="text-red-600" size={24} />
               </div>
               <p className="text-xs font-semibold uppercase text-gray-400 mb-2">
-                Researchers & Developers
+                Research
               </p>
               <h3 className="text-xl font-bold mb-4">
-                Build Better AI with YouTube Knowledge
+                Build Smarter AI with YouTube Knowledge
               </h3>
               <p className="mb-6 text-gray-700">
-                <strong>Extract transcripts in bulk</strong> from YouTube for
-                AI/LLM training, in one click.
+                Extract bulk YouTube transcripts effortlessly for AI and LLM
+                training with a single click.
               </p>
               <ul className="space-y-3 text-gray-600">
                 <li>
-                  ⚡ <strong>Lightning fast:</strong> Process channels with
-                  thousands of video transcripts in just minutes.
+                  ⚡ <strong>Fast processing:</strong> Handle thousands of video
+                  transcripts in minutes.
                 </li>
                 <li>
-                  📊 <strong>Multi-format export:</strong> Export data in
+                  📊 <strong>Flexible exports:</strong> Download data in
                   Markdown, JSON, CSV, or custom formats for training.
                 </li>
               </ul>
@@ -177,19 +173,19 @@ export default async function Home() {
       </section>
 
       {/* Stats Section */}
-      <section className="py-20 bg-red-600 text-white">
-        <div className="container mx-auto px-4">
+      <section className="py-3 bg-red-600 text-white">
+        <div className="container mx-auto px-3">
           <div className="grid md:grid-cols-3 gap-8 text-center">
             <div>
-              <div className="text-4xl font-bold mb-2">10K+</div>
+              <div className="text-3xl font-bold mb-2">2000+</div>
               <div className="text-red-100">Videos Transcribed</div>
             </div>
             <div>
-              <div className="text-4xl font-bold mb-2">95%</div>
+              <div className="text-3xl font-bold mb-2">98%</div>
               <div className="text-red-100">Accuracy Rate</div>
             </div>
             <div>
-              <div className="text-4xl font-bold mb-2">6</div>
+              <div className="text-3xl font-bold mb-2">6</div>
               <div className="text-red-100">Export Formats</div>
             </div>
           </div>
@@ -199,7 +195,8 @@ export default async function Home() {
       {/* Pricing Section */}
       <PricingSection />
 
-      <Footer />
+      {/* FAQ Section */}
+      <FAQSection />
     </div>
   );
 }

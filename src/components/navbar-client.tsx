@@ -12,15 +12,34 @@ export default function NavbarClient({ user }: { user: User | null }) {
   return (
     <nav className="w-full border-b border-gray-200 bg-white py-4">
       <div className="w-full px-24 flex justify-between items-center">
-        <Link href="/" prefetch className="inline-flex items-center">
-          <Image
-            src="/cribr-logo.jpg"
-            alt="Cribr Logo"
-            width={75}
-            height={18}
-            priority
-          />
-        </Link>
+        {/* Logo and nav links grouped on the left */}
+        <div className="flex items-center gap-12">
+          <Link href="/" prefetch className="inline-flex items-center">
+            <Image
+              src="/cribr-logo.jpg"
+              alt="Cribr Logo"
+              width={75}
+              height={18}
+              priority
+            />
+          </Link>
+
+          {/* Navigation links moved close to logo */}
+          <div className="hidden md:flex gap-8 items-center text-gray-700 font-medium text-sm">
+            <Link href="/#features" className="hover:text-gray-900">
+              Features
+            </Link>
+            <Link href="/#pricing" className="hover:text-gray-900">
+              Pricing
+            </Link>
+            <Link href="/#faq" className="hover:text-gray-900">
+              FAQ
+            </Link>
+            <Link href="/contact" className="hover:text-gray-900">
+              Contact Us
+            </Link>
+          </div>
+        </div>
 
         <div className="flex gap-4 items-center">
           {user ? (
