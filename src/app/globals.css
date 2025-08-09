@@ -57,18 +57,17 @@
     --chart-4: 280 65% 60%;
     --chart-5: 340 75% 55%;
   }
+}
 
-  /* Reset borders on all elements */
+@layer base {
   * {
-    border: none;
-    box-sizing: border-box;
+    @apply border-border;
   }
-
   body {
     @apply bg-background text-foreground;
   }
 
-  /* Custom button style */
+    /* Add your custom button style here */
   .btn {
     @apply w-full py-2 px-4 rounded bg-primary text-primary-foreground hover:bg-primary/90 transition text-sm font-medium;
   }
