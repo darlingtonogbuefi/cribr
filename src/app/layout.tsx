@@ -34,7 +34,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
   const request = {
     cookies: cookies(),
     headers: headers(),
-    nextUrl: new URL("http://localhost"),
+    nextUrl: new URL("https://www.cribr.co.uk/"),
   } as any;
 
   await updateSession(request);
