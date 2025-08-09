@@ -33,7 +33,8 @@ Cribr is a web application that allows users to quickly generate transcripts fro
 - Node.js (v16 or later)  
 - npm
 - Supabase project with API keys  
-- Google Cloud project for Identity Services  
+- Google Cloud project for Identity Services
+- DumplingAI and youtube-transcript.io API keys  
 
 ### Installation
 
