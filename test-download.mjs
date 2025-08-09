@@ -1,7 +1,7 @@
-// test-download.mjs
+
 import youtubedl from 'youtube-dl-exec';
 
-// Use the custom yt-dlp binary path
+
 const customYtDlp = youtubedl.create('C:/tools/yt-dlp/yt-dlp.exe');
 
 customYtDlp('https://youtu.be/duPZb6ZSAW8', {

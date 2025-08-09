@@ -44,8 +44,8 @@ export default async function Home() {
                 Your Ultimate AI Study Companion on YouTube
               </h3>
               <p className="mb-6 text-gray-700">
-                Master any subject faster with instant access to answers from
-                thousands of hours of educational videos.
+                Master any subject faster with instant access to text transcripts from
+                thousands of hours of educational videos on youtube.
               </p>
               <ul className="space-y-3 text-gray-600">
                 <li>
