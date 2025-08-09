@@ -1,6 +1,5 @@
 // src/app/api/transcripts/download/route.ts
 
-// src/app/api/transcripts/download/route.ts
 
 import { NextResponse } from "next/server";
 import { createClient } from "@supabase/supabase-js";
