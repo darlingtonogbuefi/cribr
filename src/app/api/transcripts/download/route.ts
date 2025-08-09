@@ -1,47 +1,62 @@
 // src/app/api/transcripts/download/route.ts
 
+// src/app/api/transcripts/download/route.ts
 
 import { NextResponse } from "next/server";
-import { createServerSupabaseClient } from "@/lib/supabaseServer";
+import { createClient } from "@supabase/supabase-js";
+
+const supabase = createClient(
+  process.env.NEXT_PUBLIC_SUPABASE_URL!,
+  process.env.SUPABASE_SERVICE_KEY!
+);
 
 export async function GET(req: Request) {
-  const supabase = createServerSupabaseClient();
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
-
-  if (!user) {
-    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
-  }
-
   const { searchParams } = new URL(req.url);
   const id = searchParams.get("id");
+  const rawUrl = searchParams.get("url");
   const format = searchParams.get("format") || "txt";
+
+  console.log("Received params:", { id, url: rawUrl, format });
 
   const allowedFormats = ["txt", "json", "srt", "vtt", "md", "csv"];
   if (!allowedFormats.includes(format)) {
+    console.error("Invalid format:", format);
     return NextResponse.json(
       {
-        error: `Invalid format '${format}'. Allowed formats: ${allowedFormats.join(", ")}`,
+        error: `Invalid format '${format}'. Allowed: ${allowedFormats.join(", ")}`,
       },
       { status: 400 }
     );
   }
 
-  if (!id) {
+  if (!id && !rawUrl) {
+    console.error("Missing both id and url");
     return NextResponse.json(
-      { error: "Missing required parameter: id" },
+      { error: "Missing required parameter: id or url" },
       { status: 400 }
     );
   }
 
-  // Fetch transcript owned by the authenticated user
-  const { data, error } = await supabase
-    .from("transcripts")
-    .select("transcript_text, video_title")
-    .eq("id", id)
-    .eq("user_id", user.id)
-    .maybeSingle();
+  let query;
+  if (id) {
+    query = supabase
+      .from("transcripts")
+      .select("transcript_text, video_title")
+      .eq("id", id)
+      .maybeSingle();
+  } else {
+    const url = decodeURIComponent(rawUrl!);
+    query = supabase
+      .from("transcripts")
+      .select("transcript_text, video_title")
+      .eq("video_url", url)
+      .order("created_at", { ascending: false })
+      .limit(1)
+      .maybeSingle();
+  }
+
+  const { data, error } = await query;
+  console.log("Supabase query:", { data, error });
 
   if (error) {
     console.error("Supabase error:", error);
@@ -49,6 +64,7 @@ export async function GET(req: Request) {
   }
 
   if (!data) {
+    console.warn("No transcript found");
     return NextResponse.json({ error: "Transcript not found" }, { status: 404 });
   }
 
