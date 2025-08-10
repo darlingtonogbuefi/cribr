@@ -9,8 +9,7 @@ interface GoogleAuthButtonProps {
 
 export default function GoogleAuthButton({ mode, callback }: GoogleAuthButtonProps) {
   const googleDivRef = useRef<HTMLDivElement>(null);
-  const [scriptLoaded, setScriptLoaded] = useState(false);
-  const lastMode = useRef<string | null>(null);
+  const [ready, setReady] = useState(false);
 
   useEffect(() => {
     const scriptId = "google-identity-script";
@@ -21,56 +20,44 @@ export default function GoogleAuthButton({ mode, callback }: GoogleAuthButtonPro
       script.async = true;
       script.defer = true;
       script.id = scriptId;
-      script.onload = () => setScriptLoaded(true);
+      script.onload = renderGoogleButton;
       document.body.appendChild(script);
     } else {
-      setScriptLoaded(true);
+      renderGoogleButton();
     }
-  }, []);
 
-  useEffect(() => {
-    if (!scriptLoaded || !googleDivRef.current || lastMode.current === mode) return;
+    function renderGoogleButton() {
+      if (window.google && googleDivRef.current) {
+        window.google.accounts.id.initialize({
+          client_id: process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID!,
+          callback,
+          context: mode,
+        });
 
-    if (window.google) {
-      googleDivRef.current.innerHTML = "";
+        window.google.accounts.id.renderButton(googleDivRef.current, {
+          theme: "outline",
+          size: "large",
+          shape: "pill",
+          text: mode === "signin" ? "signin_with" : "signup_with",
+          logo_alignment: "left",
+        });
 
-      window.google.accounts.id.initialize({
-        client_id: process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID!,
-        callback,
-        context: mode,
-      });
-
-      window.google.accounts.id.renderButton(googleDivRef.current, {
-        theme: "outline",
-        size: "large",
-        shape: "pill",
-        text: mode === "signin" ? "signin_with" : "signup_with",
-        logo_alignment: "left",
-      });
-
-      lastMode.current = mode;
+        setReady(true);
+      }
     }
-  }, [mode, callback, scriptLoaded]);
+  }, [mode, callback]);
 
   return (
     <div
+      ref={googleDivRef}
       style={{
         marginTop: 24,
-        display: "flex",
-        justifyContent: "center", // center horizontally
+        display: ready ? "flex" : "none",
+        justifyContent: "center",
+        alignItems: "center",
+        minWidth: 240, // large pill width
+        minHeight: 40, // button height
       }}
-    >
-      <div
-        ref={googleDivRef}
-        style={{
-          visibility: scriptLoaded ? "visible" : "hidden",
-          display: "inline-block", // allow the button to size itself
-          transform: "translateZ(0)",
-          willChange: "transform",
-          minWidth: 240, // minimum width for the pill shape
-          minHeight: 40,  // minimum height for the pill shape
-        }}
-      />
-    </div>
+    ></div>
   );
 }
