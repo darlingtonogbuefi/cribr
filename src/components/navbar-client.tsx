@@ -18,8 +18,8 @@ export default function NavbarClient({ user }: { user: User | null }) {
             <Image
               src="/cribr-logo.jpg"
               alt="Cribr Logo"
-              width={50}
-              height={12}
+              width={60}
+              height={14}
               priority
             />
           </Link>
