@@ -1,4 +1,4 @@
-# Cribr — YouTube Transcript Extraction Web App
+# Cribr — YouTube Transcript Extraction
 
 Cribr is a web application that allows users to quickly generate transcripts from YouTube videos.
 
