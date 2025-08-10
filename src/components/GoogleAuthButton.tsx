@@ -1,6 +1,3 @@
-//   src\components\GoogleAuthButton.tsx
-
-
 "use client";
 
 import { useEffect, useRef, useState } from "react";
@@ -31,18 +28,17 @@ export default function GoogleAuthButton({ mode, callback }: GoogleAuthButtonPro
 
     function renderGoogleButton() {
       if (window.google && googleDivRef.current) {
-        // Initialize with minimal options to allow Google's default UI behavior
         window.google.accounts.id.initialize({
           client_id: process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID!,
           callback,
-          // No context or auto_select here — default behavior enabled
+          context: mode,
         });
 
         window.google.accounts.id.renderButton(googleDivRef.current, {
           theme: "outline",
           size: "large",
           shape: "pill",
-          // REMOVE the text property here so Google uses its default text/UI
+          text: mode === "signin" ? "signin_with" : "signup_with",
           logo_alignment: "left",
         });
 
@@ -59,8 +55,8 @@ export default function GoogleAuthButton({ mode, callback }: GoogleAuthButtonPro
         display: ready ? "flex" : "none",
         justifyContent: "center",
         alignItems: "center",
-        minWidth: 240,
-        minHeight: 40,
+        minWidth: 240, // large pill width
+        minHeight: 40, // button height
       }}
     ></div>
   );
