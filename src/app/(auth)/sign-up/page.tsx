@@ -1,54 +1,21 @@
 "use client"
 
-import { useEffect, useRef } from "react"
-import Link from "next/link"
-import { signInWithGoogleIdToken } from "@/app/actions"
+"use client";
+
+import Link from "next/link";
+import { signInWithGoogleIdToken } from "@/app/actions";
+import GoogleAuthButton from "@/components/GoogleAuthButton";
 
 export default function SignUpPage() {
-  const googleDivRef = useRef<HTMLDivElement>(null)
-
-  useEffect(() => {
-    window.handleSignUpWithGoogle = async (response: any) => {
-      const token = response.credential
-      try {
-        await signInWithGoogleIdToken(token) // calls server action
-      } catch (err) {
-        console.error(err)
-        alert("Failed to sign up with Google.")
-      }
+  const handleSignUpWithGoogle = async (response: any) => {
+    const token = response.credential;
+    try {
+      await signInWithGoogleIdToken(token);
+    } catch (err) {
+      console.error(err);
+      alert("Failed to sign up with Google.");
     }
-
-    const scriptId = "google-identity-script"
-    if (!document.getElementById(scriptId)) {
-      const script = document.createElement("script")
-      script.src = "https://accounts.google.com/gsi/client"
-      script.async = true
-      script.defer = true
-      script.id = scriptId
-      script.onload = renderGoogleButton
-      document.body.appendChild(script)
-    } else {
-      renderGoogleButton()
-    }
-
-    function renderGoogleButton() {
-      if (window.google && googleDivRef.current) {
-        window.google.accounts.id.initialize({
-          client_id: process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID!,
-          callback: window.handleSignUpWithGoogle!,
-          context: "signup",
-        })
-
-        window.google.accounts.id.renderButton(googleDivRef.current, {
-          theme: "outline",
-          size: "large",
-          shape: "pill",
-          text: "signup_with",
-          logo_alignment: "left",
-        })
-      }
-    }
-  }, [])
+  };
 
   return (
     <main style={styles.container}>
@@ -61,14 +28,14 @@ export default function SignUpPage() {
           </Link>
         </p>
 
-        <div ref={googleDivRef} style={{ marginTop: 24 }}></div>
+        <GoogleAuthButton mode="signup" callback={handleSignUpWithGoogle} />
 
         <p style={styles.note}>
           We only use Google for authentication. Your Google data is safe and secure.
         </p>
       </div>
     </main>
-  )
+  );
 }
 
 const styles = {
@@ -108,4 +75,4 @@ const styles = {
     fontSize: 13,
     color: "#6b7280",
   },
-}
+};

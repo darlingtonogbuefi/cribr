@@ -1,58 +1,21 @@
 //   src\app\(auth)\sign-in\page.tsx
 
-"use client"
+"use client";
 
-import { useEffect, useRef } from "react"
-import Link from "next/link"
-import { signInWithGoogleIdToken } from "@/app/actions"
+import Link from "next/link";
+import { signInWithGoogleIdToken } from "@/app/actions";
+import GoogleAuthButton from "@/components/GoogleAuthButton";
 
 export default function SignInPage() {
-  const googleDivRef = useRef<HTMLDivElement>(null)
-
-  useEffect(() => {
-    // Called by Google Identity Services after sign-in
-    window.handleSignInWithGoogle = async (response: any) => {
-      const token = response.credential
-      try {
-        await signInWithGoogleIdToken(token) // server action (no CORS)
-      } catch (err) {
-        console.error(err)
-        alert("Failed to sign in with Google.")
-      }
+  const handleSignInWithGoogle = async (response: any) => {
+    const token = response.credential;
+    try {
+      await signInWithGoogleIdToken(token);
+    } catch (err) {
+      console.error(err);
+      alert("Failed to sign in with Google.");
     }
-
-    // Load Google Identity script if not already loaded
-    const scriptId = "google-identity-script"
-    if (!document.getElementById(scriptId)) {
-      const script = document.createElement("script")
-      script.src = "https://accounts.google.com/gsi/client"
-      script.async = true
-      script.defer = true
-      script.id = scriptId
-      script.onload = renderGoogleButton
-      document.body.appendChild(script)
-    } else {
-      renderGoogleButton()
-    }
-
-    function renderGoogleButton() {
-      if (window.google && googleDivRef.current) {
-        window.google.accounts.id.initialize({
-          client_id: process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID!,
-          callback: window.handleSignInWithGoogle!,
-          context: "signin",
-        })
-
-        window.google.accounts.id.renderButton(googleDivRef.current, {
-          theme: "outline",
-          size: "large",
-          shape: "pill",
-          text: "signin_with",
-          logo_alignment: "left",
-        })
-      }
-    }
-  }, [])
+  };
 
   return (
     <main style={styles.container}>
@@ -65,14 +28,14 @@ export default function SignInPage() {
           </Link>
         </p>
 
-        <div ref={googleDivRef} style={{ marginTop: 24 }}></div>
+        <GoogleAuthButton mode="signin" callback={handleSignInWithGoogle} />
 
         <p style={styles.note}>
           We only use Google for authentication. Your Google data is safe and secure.
         </p>
       </div>
     </main>
-  )
+  );
 }
 
 const styles = {
@@ -112,4 +75,5 @@ const styles = {
     fontSize: 13,
     color: "#6b7280",
   },
-}
+};
+
