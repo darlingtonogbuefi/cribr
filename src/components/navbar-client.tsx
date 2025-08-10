@@ -11,9 +11,9 @@ import type { User } from "@supabase/supabase-js";
 export default function NavbarClient({ user }: { user: User | null }) {
   return (
     <nav className="w-full border-b border-gray-200 bg-white py-4">
-      <div className="w-full px-24 flex justify-between items-center">
+      <div className="w-full px-0 flex justify-between items-center">
         {/* Logo and nav links grouped on the left */}
-        <div className="flex items-center gap-12">
+        <div className="flex items-center gap-12 ml-6">
           <Link href="/" prefetch className="inline-flex items-center">
             <Image
               src="/cribr-logo.jpg"
@@ -41,7 +41,7 @@ export default function NavbarClient({ user }: { user: User | null }) {
           </div>
         </div>
 
-        <div className="flex gap-4 items-center">
+        <div className="flex gap-4 items-center mr-6">
           {user ? (
             <>
               <Link
