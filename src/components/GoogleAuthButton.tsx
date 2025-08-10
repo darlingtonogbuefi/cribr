@@ -1,3 +1,6 @@
+//   src\components\GoogleAuthButton.tsx
+
+
 "use client";
 
 import { useEffect, useRef, useState } from "react";
@@ -32,6 +35,7 @@ export default function GoogleAuthButton({ mode, callback }: GoogleAuthButtonPro
           client_id: process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID!,
           callback,
           context: mode,
+          auto_select: false, // Disable auto sign-in / auto switching here
         });
 
         window.google.accounts.id.renderButton(googleDivRef.current, {
@@ -55,8 +59,8 @@ export default function GoogleAuthButton({ mode, callback }: GoogleAuthButtonPro
         display: ready ? "flex" : "none",
         justifyContent: "center",
         alignItems: "center",
-        minWidth: 240, // large pill width
-        minHeight: 40, // button height
+        minWidth: 240,
+        minHeight: 40,
       }}
     ></div>
   );
