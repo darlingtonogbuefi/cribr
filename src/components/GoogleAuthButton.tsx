@@ -9,8 +9,10 @@ interface GoogleAuthButtonProps {
 
 export default function GoogleAuthButton({ mode, callback }: GoogleAuthButtonProps) {
   const googleDivRef = useRef<HTMLDivElement>(null);
-  const [ready, setReady] = useState(false);
+  const [scriptLoaded, setScriptLoaded] = useState(false);
+  const lastMode = useRef<string | null>(null);
 
+  // Load Google script once
   useEffect(() => {
     const scriptId = "google-identity-script";
 
@@ -20,43 +22,50 @@ export default function GoogleAuthButton({ mode, callback }: GoogleAuthButtonPro
       script.async = true;
       script.defer = true;
       script.id = scriptId;
-      script.onload = renderGoogleButton;
+      script.onload = () => setScriptLoaded(true);
       document.body.appendChild(script);
     } else {
-      renderGoogleButton();
+      setScriptLoaded(true);
     }
+  }, []);
 
-    function renderGoogleButton() {
-      if (window.google && googleDivRef.current) {
-        window.google.accounts.id.initialize({
-          client_id: process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID!,
-          callback,
-          context: mode,
-        });
+  // Initialize or re-render button only when mode changes and script is loaded
+  useEffect(() => {
+    if (!scriptLoaded || !googleDivRef.current || lastMode.current === mode) return;
 
-        window.google.accounts.id.renderButton(googleDivRef.current, {
-          theme: "outline",
-          size: "large",
-          shape: "pill",
-          text: mode === "signin" ? "signin_with" : "signup_with",
-          logo_alignment: "left",
-        });
+    if (window.google) {
+      // Clear previous button if any
+      googleDivRef.current.innerHTML = "";
 
-        setReady(true);
-      }
+      window.google.accounts.id.initialize({
+        client_id: process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID!,
+        callback,
+        context: mode,
+      });
+
+      window.google.accounts.id.renderButton(googleDivRef.current, {
+        theme: "outline",
+        size: "large",
+        shape: "pill",
+        text: mode === "signin" ? "signin_with" : "signup_with",
+        logo_alignment: "left",
+      });
+
+      lastMode.current = mode;
     }
-  }, [mode, callback]);
+  }, [mode, callback, scriptLoaded]);
 
   return (
     <div
       ref={googleDivRef}
       style={{
         marginTop: 24,
-        display: ready ? "flex" : "none",
+        display: "flex",
         justifyContent: "center",
         alignItems: "center",
-        minWidth: 240, // large pill width
-        minHeight: 40, // button height
+        minWidth: 240,
+        minHeight: 40,
+        visibility: scriptLoaded ? "visible" : "hidden",
       }}
     ></div>
   );
