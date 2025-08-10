@@ -31,11 +31,11 @@ export default function GoogleAuthButton({ mode, callback }: GoogleAuthButtonPro
 
     function renderGoogleButton() {
       if (window.google && googleDivRef.current) {
+        // Initialize with minimal options to allow Google's default UI behavior
         window.google.accounts.id.initialize({
           client_id: process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID!,
           callback,
-          context: mode,
-          auto_select: false, // Disable auto sign-in / auto switching here
+          // No context or auto_select here — default behavior enabled
         });
 
         window.google.accounts.id.renderButton(googleDivRef.current, {
