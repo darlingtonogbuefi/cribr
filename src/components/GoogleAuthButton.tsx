@@ -12,7 +12,6 @@ export default function GoogleAuthButton({ mode, callback }: GoogleAuthButtonPro
   const [scriptLoaded, setScriptLoaded] = useState(false);
   const lastMode = useRef<string | null>(null);
 
-  // Load Google script once
   useEffect(() => {
     const scriptId = "google-identity-script";
 
@@ -29,12 +28,10 @@ export default function GoogleAuthButton({ mode, callback }: GoogleAuthButtonPro
     }
   }, []);
 
-  // Initialize or re-render button only when mode changes and script is loaded
   useEffect(() => {
     if (!scriptLoaded || !googleDivRef.current || lastMode.current === mode) return;
 
     if (window.google) {
-      // Clear previous button if any
       googleDivRef.current.innerHTML = "";
 
       window.google.accounts.id.initialize({
@@ -57,16 +54,23 @@ export default function GoogleAuthButton({ mode, callback }: GoogleAuthButtonPro
 
   return (
     <div
-      ref={googleDivRef}
       style={{
         marginTop: 24,
         display: "flex",
-        justifyContent: "center",
-        alignItems: "center",
-        minWidth: 240,
-        minHeight: 40,
-        visibility: scriptLoaded ? "visible" : "hidden",
+        justifyContent: "center", // center horizontally
       }}
-    ></div>
+    >
+      <div
+        ref={googleDivRef}
+        style={{
+          visibility: scriptLoaded ? "visible" : "hidden",
+          display: "inline-block", // allow the button to size itself
+          transform: "translateZ(0)",
+          willChange: "transform",
+          minWidth: 240, // minimum width for the pill shape
+          minHeight: 40,  // minimum height for the pill shape
+        }}
+      />
+    </div>
   );
 }
