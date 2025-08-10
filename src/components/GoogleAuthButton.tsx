@@ -42,7 +42,7 @@ export default function GoogleAuthButton({ mode, callback }: GoogleAuthButtonPro
           theme: "outline",
           size: "large",
           shape: "pill",
-          text: mode === "signin" ? "signin_with" : "signup_with",
+          // REMOVE the text property here so Google uses its default text/UI
           logo_alignment: "left",
         });
 
