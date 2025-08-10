@@ -15,7 +15,7 @@ export default function TermsPage() {
       <section>
         <h2 className="text-2xl font-semibold mb-3">Use of Service</h2>
         <p>
-          Cribr is provided for lawful use only. You agree not to use the service to transcribe content you do not have rights to.
+          Cribr.co.uk is an independent pet project and is not affiliated with, endorsed by, or sponsored by YouTube, Google, or any other company. All product names, logos, and brands are the property of their respective owners. Cribr is provided for lawful use only. You agree not to use the service to transcribe content you do not have rights to.
         </p>
       </section>
 

@@ -123,6 +123,9 @@ export default function Footer() {
         <div className="flex flex-col md:flex-row justify-between items-center pt-8 border-t border-gray-200">
           <div className="text-gray-600 mb-4 md:mb-0">
             © {currentYear} Cribr. All rights reserved.
+            <div className="text-xs text-gray-400 mt-1">
+              Cribr.co.uk is an independent pet project and is not affiliated with, endorsed by, or sponsored by YouTube, Google, or any other company. All product names, logos, and brands are the property of their respective owners.
+            </div>
           </div>
 
           <div className="flex space-x-6">
