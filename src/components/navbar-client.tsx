@@ -32,7 +32,7 @@ export default function NavbarClient({ user }: { user: User | null }) {
             <Link href="/#pricing" className="hover:text-gray-900">
               Pricing
             </Link>
-            <Link href="/about" className="hover:text-gray-900">
+            <Link href="/pages/about" className="hover:text-gray-900">
               About
             </Link>
             <Link href="/#faq" className="hover:text-gray-900">
