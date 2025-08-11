@@ -76,7 +76,7 @@ export default function AboutPage() {
             >
               cribr.co.uk
             </a>
-            . It actually started out as a personal app (Python based) that I had built to help me extract data from social media for use in training ML models.
+            . It actually started out as a personal app (Python based) that I had built to help me extract data for training ML models.
           </p>
           <p className="mb-4 text-lg">
             For Cribr, I decided to ditch most of the original Python code and instead use online AI services to handle the heavy stuff. I hooked it up with tools like{" "}
