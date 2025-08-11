@@ -20,8 +20,8 @@ export default async function Home() {
     <div className="min-h-screen bg-gradient-to-b from-white to-gray-50">
       <Hero userId={user?.id ?? null} />
 
-      {/* Features Section */}
-      <section id="features" className="py-24 bg-white">
+      {/* Features Section with scroll offset */}
+      <section id="features" className="pt-20 -mt-20 py-24 bg-white">
         <div className="container mx-auto px-6">
           <div className="text-center mb-16">
             <h2 className="text-3xl font-bold mb-4">Features</h2>
@@ -192,11 +192,15 @@ export default async function Home() {
         </div>
       </section>
 
-      {/* Pricing Section */}
-      <PricingSection />
+      {/* Pricing Section with scroll offset */}
+      <section id="pricing" className="pt-20 -mt-20">
+        <PricingSection />
+      </section>
 
-      {/* FAQ Section */}
-      <FAQSection />
+      {/* FAQ Section with scroll offset */}
+      <section id="faq" className="pt-20 -mt-20">
+        <FAQSection />
+      </section>
     </div>
   );
 }

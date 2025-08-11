@@ -1,12 +1,13 @@
 // src\app\layout.tsx
 
+// src/app/layout.tsx
+
 import "./globals.css";
 import { Inter } from "next/font/google";
 import type { Metadata } from "next";
 import { cookies, headers } from "next/headers";
 import { updateSession } from "../../supabase/middleware";
 import { ThemeProvider } from "@/components/theme-provider";
-// import { TempoInit } from "@/components/tempo-init"
 import ClientWrapper from "../components/ClientWrapper";
 
 import NavbarClient from "@/components/navbar-client";
@@ -39,7 +40,6 @@ export default async function RootLayout({ children }: { children: React.ReactNo
 
   await updateSession(request);
 
-  // Create Supabase client and get user for NavbarClient
   const supabase = await createClient();
   const {
     data: { user },
@@ -50,13 +50,12 @@ export default async function RootLayout({ children }: { children: React.ReactNo
       <body className={inter.className}>
         <ThemeProvider attribute="class" defaultTheme="light" enableSystem disableTransitionOnChange>
           <ClientWrapper>
-            {/* Navbar with user */}
+            {/* Navbar fixed at top */}
             <NavbarClient user={user} />
 
-            {/* Main page content */}
-            <main className="flex-1">{children}</main>
+            {/* Add padding so content is not hidden under navbar */}
+            <main className="flex-1 pt-20">{children}</main>
 
-            {/* Footer */}
             <Footer />
           </ClientWrapper>
         </ThemeProvider>

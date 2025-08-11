@@ -1,5 +1,7 @@
 // src/components/navbar-client.tsx
 
+// src/components/navbar-client.tsx
+
 "use client";
 
 import Link from "next/link";
@@ -10,7 +12,7 @@ import type { User } from "@supabase/supabase-js";
 
 export default function NavbarClient({ user }: { user: User | null }) {
   return (
-    <nav className="w-full border-b border-gray-200 bg-white py-4">
+    <nav className="fixed top-0 left-0 w-full border-b border-gray-200 bg-white py-4 z-50">
       <div className="w-full px-0 flex justify-between items-center">
         {/* Logo and nav links grouped on the left */}
         <div className="flex items-center gap-12 ml-6">
