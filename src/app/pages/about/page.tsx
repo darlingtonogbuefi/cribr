@@ -58,7 +58,7 @@ export default function AboutPage() {
 
         <section id="about-cribr" tabIndex={-1}>
           <p className="mb-4 text-lg">
-            Cribr is a web app I built as a fun pet project, and it barely cost me anything except for the £4.54 I spent on at{" "}
+            Cribr is a web app I built as a fun pet project, and it barely cost me anything except for the £4.54 I spent at{" "}
             <a
               href="https://www.dynadot.com/"
               target="_blank"
