@@ -40,7 +40,7 @@ export default function SearchBar({ onSubmit, onClear }: SearchBarProps) {
       onSubmit={handleSubmit}
       className="mx-auto flex flex-col gap-3 items-center"
     >
-      <div className="relative w-[750px] max-w-full">
+      <div className="relative w-[700px] max-w-full">
         <input
           type="text"
           placeholder="Enter YouTube video, playlist, or channel URL"
