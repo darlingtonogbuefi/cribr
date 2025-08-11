@@ -97,7 +97,7 @@ export default function AboutPage() {
             >
               Dumpling AI
             </a>{" "}
-            to do the content extraction and processing. This way, I kept the app lightweight and avoided dealing with complex backend code, making the whole thing faster to build and easier to maintain.
+            to do the transcript extraction and processing. This way, I kept the app lightweight and avoided dealing with complex backend code, making the whole thing faster to build and easier to maintain.
           </p>
           <p className="mb-4 text-lg">
             The goal was to create a more robust, scalable app that transcribes YouTube videos efficiently. Cribr uses{" "}
