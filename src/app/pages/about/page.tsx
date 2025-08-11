@@ -109,7 +109,7 @@ export default function AboutPage() {
             >
               Supabase
             </a>{" "}
-            for Auth+Google GIS, as a Postgres database to store transcripts and metadata, and it's deployed & hosted on{" "}
+            with Google One Tap, for Auth and PostgresSQL DB to store transcripts and metadata, and deployed via{" "}
             <a
               href="https://vercel.com/"
               target="_blank"
