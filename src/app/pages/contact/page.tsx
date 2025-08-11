@@ -33,7 +33,7 @@ export default function ContactPage() {
           <h2 className="text-2xl font-semibold mb-4">Contact Details</h2>
           <ul className="space-y-3 text-gray-700">
             <li>
-              <strong>Email:</strong> <a href="mailto:support@cribr.ai" className="text-red-600 hover:underline">support@cribr.co.uk</a>
+              <strong>Email:</strong> <a href="mailto:support@cribr.ai" className="text-red-600 hover:underline">cribrappcribr@gmail.com</a>
             </li>
             <li>
               <strong>Phone:</strong> <a href="tel:+1234567890" className="text-red-600 hover:underline">+1 (234) 567-890</a>

@@ -10,7 +10,8 @@ export default function Footer() {
   return (
     <footer className="bg-gray-50 border-t border-gray-100">
       <div className="container mx-auto px-4 py-12">
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-8 mb-12">
+        {/* Top grid section */}
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-8 mb-12 justify-items-center text-center">
           {/* Product Column */}
           <div>
             <h3 className="font-semibold text-gray-900 mb-4">Product</h3>
@@ -120,10 +121,11 @@ export default function Footer() {
           </div>
         </div>
 
-        <div className="flex flex-col md:flex-row justify-between items-center pt-8 border-t border-gray-200">
-          <div className="text-gray-600 mb-4 md:mb-0">
+        {/* Bottom section */}
+        <div className="flex flex-col items-center pt-8 border-t border-gray-200 text-center">
+          <div className="text-gray-600 mb-4">
             © {currentYear} cribr.co.uk All rights reserved.
-            <div className="text-xs text-gray-400 mt-1">
+            <div className="text-xs text-gray-400 mt-1 max-w-xl">
               <p>
                 Cribr.co.uk is an independent pet project and is not affiliated with, endorsed by, or sponsored by YouTube, Google, or any other company.
               </p>
@@ -134,15 +136,30 @@ export default function Footer() {
           </div>
 
           <div className="flex space-x-6">
-            <a href="https://twitter.com/cribrapp" target="_blank" rel="noopener noreferrer" className="text-gray-400 hover:text-gray-500">
+            <a
+              href="https://twitter.com/cribrapp"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-gray-400 hover:text-gray-500"
+            >
               <span className="sr-only">Twitter</span>
               <Twitter className="h-6 w-6" />
             </a>
-            <a href="https://linkedin.com/company/cribrapp" target="_blank" rel="noopener noreferrer" className="text-gray-400 hover:text-gray-500">
+            <a
+              href="https://www.linkedin.com/in/darlington-ogbuefi-310251259/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-gray-400 hover:text-gray-500"
+            >
               <span className="sr-only">LinkedIn</span>
               <Linkedin className="h-6 w-6" />
             </a>
-            <a href="https://github.com/darlingtonogbuefi/cribr" target="_blank" rel="noopener noreferrer" className="text-gray-400 hover:text-gray-500">
+            <a
+              href="https://github.com/darlingtonogbuefi/cribr"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-gray-400 hover:text-gray-500"
+            >
               <span className="sr-only">GitHub</span>
               <Github className="h-6 w-6" />
             </a>
@@ -152,4 +169,3 @@ export default function Footer() {
     </footer>
   );
 }
-

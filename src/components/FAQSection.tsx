@@ -1,3 +1,5 @@
+//    src\components\FAQSection.tsx
+
 "use client";
 
 import { useState } from "react";
@@ -59,28 +61,26 @@ export default function FAQSection() {
 
   return (
     <section id="faq" className="py-20 bg-white">
-      <div className="container mx-auto px-6 max-w-5xl">
-        <h2 className="text-3xl font-bold text-center mb-12">
-          Frequently Asked Questions
-        </h2>
+      <div className="container mx-auto px-6 max-w-3xl">
+        <h2 className="text-3xl font-bold text-center mb-12">FAQs</h2>
         <div className="space-y-4">
           {faqs.map(({ question, answer }, index) => {
             const isOpen = openIndex === index;
             return (
               <div
                 key={index}
-                className="border border-gray-200 rounded-lg shadow-sm"
+                className="border border-purple-500 rounded-2xl shadow-sm"
               >
                 <button
                   onClick={() => toggleIndex(index)}
-                  className="w-full text-left px-6 py-4 flex justify-between items-center focus:outline-none"
+                  className="w-full text-left px-5 py-3 flex justify-between items-center focus:outline-none hover:bg-purple-50 transition-colors"
                   aria-expanded={isOpen}
                   aria-controls={`faq-answer-${index}`}
                   id={`faq-question-${index}`}
                 >
                   <span className="text-lg font-semibold">{question}</span>
                   <svg
-                    className={`w-6 h-6 transition-transform duration-300 ${
+                    className={`w-5 h-5 transition-transform duration-300 ${
                       isOpen ? "rotate-180" : ""
                     }`}
                     fill="none"
@@ -101,7 +101,7 @@ export default function FAQSection() {
                     id={`faq-answer-${index}`}
                     role="region"
                     aria-labelledby={`faq-question-${index}`}
-                    className="px-6 pb-6 text-gray-700"
+                    className="px-5 pb-5 text-gray-700 text-base"
                   >
                     {answer}
                   </div>
