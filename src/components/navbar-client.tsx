@@ -1,7 +1,5 @@
 // src/components/navbar-client.tsx
 
-// src/components/navbar-client.tsx
-
 "use client";
 
 import Link from "next/link";
@@ -26,13 +24,16 @@ export default function NavbarClient({ user }: { user: User | null }) {
             />
           </Link>
 
-          {/* Navigation links moved close to logo */}
+          {/* Navigation links with About after Pricing */}
           <div className="hidden md:flex gap-8 items-center text-gray-700 font-medium text-sm">
             <Link href="/#features" className="hover:text-gray-900">
               Features
             </Link>
             <Link href="/#pricing" className="hover:text-gray-900">
               Pricing
+            </Link>
+            <Link href="/about" className="hover:text-gray-900">
+              About
             </Link>
             <Link href="/#faq" className="hover:text-gray-900">
               FAQ
