@@ -38,25 +38,25 @@ export default function SearchBar({ onSubmit, onClear }: SearchBarProps) {
   return (
     <form
       onSubmit={handleSubmit}
-      className="max-w-xl mx-auto flex flex-col gap-3 items-center"
+      className="mx-auto flex flex-col gap-3 items-center"
     >
-      <div className="relative w-[800px] max-w-full">
+      <div className="relative w-[750px] max-w-full">
         <input
           type="text"
           placeholder="Enter YouTube video, playlist, or channel URL"
           className="
-            pr-10
+            pr-16
             border
             border-gray-300
-            py-2
-            px-4
+            py-4
+            px-6
             w-full
             text-sm
             focus:outline-none
             focus:ring-2
             focus:ring-red-500
             transition
-            rounded-md
+            rounded-full
           "
           value={url}
           onChange={(e) => setUrl(e.target.value)}
@@ -65,9 +65,9 @@ export default function SearchBar({ onSubmit, onClear }: SearchBarProps) {
         <button
           type="button"
           onClick={() => handleSubmit()}
-          className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 hover:text-red-600 transition"
+          className="absolute right-5 top-1/2 -translate-y-1/2 text-gray-500 hover:text-red-600 transition"
         >
-          <Search size={18} />
+          <Search size={20} />
         </button>
       </div>
 
