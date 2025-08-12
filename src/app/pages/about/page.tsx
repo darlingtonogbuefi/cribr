@@ -109,7 +109,7 @@ export default function AboutPage() {
             >
               Supabase
             </a>{" "}
-            with Google One Tap, for Auth and PostgresSQL DB to store transcripts and metadata, and deployed via{" "}
+            with Google One Tap, for Auth and Storage (PostgresSQL DB), and deployed via{" "}
             <a
               href="https://vercel.com/"
               target="_blank"

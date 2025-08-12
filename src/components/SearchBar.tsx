@@ -26,15 +26,6 @@ export default function SearchBar({ onSubmit, onClear }: SearchBarProps) {
     onClear();
   };
 
-  const handleBulkTranscribe = () => {
-    const pricingSection = document.getElementById("pricing");
-    if (pricingSection) {
-      pricingSection.scrollIntoView({ behavior: "smooth" });
-    } else {
-      window.location.href = "#pricing";
-    }
-  };
-
   return (
     <form
       onSubmit={handleSubmit}
@@ -77,14 +68,6 @@ export default function SearchBar({ onSubmit, onClear }: SearchBarProps) {
           className="w-32 bg-red-600 text-white rounded-md px-3 py-1 hover:bg-red-700 transition text-sm"
         >
           Transcribe
-        </button>
-
-        <button
-          type="button"
-          onClick={handleBulkTranscribe}
-          className="w-36 bg-red-600 text-white rounded-md px-3 py-1 hover:bg-red-700 transition text-sm"
-        >
-          Bulk Transcribe
         </button>
 
         <button
