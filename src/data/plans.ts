@@ -37,7 +37,7 @@ export const plans: Plan[] = [
     features: [
       "All of Free features",
       "+ 400 Transcribed videos/Mo",
-      "+ Bulk/Channel transcript downloads",
+      "+ Bulk/Playlists/Channel transcript downloads",
       "+ last 30 days of transcripts",
       "+ Standard email support (TAT 48hrs)",
     ],

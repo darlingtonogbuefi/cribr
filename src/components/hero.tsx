@@ -42,10 +42,10 @@ export default function Hero({ userId = null }: HeroProps) {
 
             <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
               <Link
-                href="/dashboard"
+                href="/#pricing"
                 className="inline-flex min-w-[230px] justify-center items-center px-8 py-4 text-white bg-red-600 rounded-lg hover:bg-red-700 transition-colors text-lg font-medium"
               >
-                Start Transcribing
+                Bulk Transcribe
                 <ArrowUpRight className="ml-2 w-5 h-5" />
               </Link>
 
