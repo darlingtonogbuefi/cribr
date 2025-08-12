@@ -101,7 +101,7 @@ export default function AboutPage() {
           </p>
           <p className="mb-4 text-lg">
             The goal was to build a more robust and scalable application for transcribing YouTube videos efficiently—one that eliminates the constant frustration of dealing with YouTube’s frequent site and API updates that often break extraction tools. 
-            This app aims to provide a reliable, seamless transcription experience without the typical maintenance headaches caused by platform changes. Cribr uses{" "}
+            This app aims to provide a reliable, seamless transcription experience without the typical maintenance headaches caused by platform changes. The app integrates{" "}
             <a
               href="https://supabase.com/"
               target="_blank"
@@ -110,7 +110,7 @@ export default function AboutPage() {
             >
               Supabase
             </a>{" "}
-            with Google One Tap, for Auth and Storage (PostgresSQL DB), and deployed via{" "}
+            with Google One Tap for seamless user authentication, leverages a PostgreSQL database to securely store metadata and transcripts, and is deployed via{" "}
             <a
               href="https://vercel.com/"
               target="_blank"
