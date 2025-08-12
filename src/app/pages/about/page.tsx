@@ -101,7 +101,7 @@ export default function AboutPage() {
           </p>
           <p className="mb-4 text-lg">
             The goal was to build a more robust and scalable application for transcribing YouTube videos efficiently—one that eliminates the constant frustration of dealing with YouTube’s frequent site and API updates that often break extraction tools. 
-            This app aims to provide a reliable, seamless transcription experience without the typical maintenance headaches caused by platform changes. The app integrates{" "}
+            This app aims to provide a reliable, seamless transcription experience without the typical maintenance headaches caused by platform changes. Cribr uses{" "}
             <a
               href="https://supabase.com/"
               target="_blank"
