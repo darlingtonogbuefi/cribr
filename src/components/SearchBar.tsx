@@ -34,7 +34,7 @@ export default function SearchBar({ onSubmit, onClear }: SearchBarProps) {
       <div className="relative w-[700px] max-w-full">
         <input
           type="text"
-          placeholder="Enter YouTube video, playlist, or channel URL"
+          placeholder="Azeez Abeeb of 16 Castle Road...Please Enter YouTube video, playlist, or channel URL"
           className="
             pr-16
             border
