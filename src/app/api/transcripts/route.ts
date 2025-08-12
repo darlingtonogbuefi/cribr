@@ -8,6 +8,7 @@ import { getYouTubeMetadata } from "@/lib/fetchYouTubeMetadata";
 import { getTranscriptFromProviders } from "@/lib/transcript/getTranscriptFromProviders";
 import { saveTranscriptToSupabase } from "@/lib/transcript/saveTranscriptToSupabase";
 import type { Database } from "@/types/supabase";
+import sanitizeHtml from "sanitize-html";
 
 type Transcript = Database["public"]["Tables"]["transcripts"]["Row"];
 
@@ -56,16 +57,23 @@ export async function POST(request: Request) {
     const existing = existingArray?.[0];
 
     if (existing) {
+      // Sanitize existing transcript and metadata before returning
+      const safeTranscript = sanitizeHtml(existing.transcript_text, {
+        allowedTags: [],
+        allowedAttributes: {},
+      });
+      const safeMetadata = {
+        title: sanitizeHtml(existing.video_title || ""),
+        channel: sanitizeHtml(existing.video_channel || ""),
+        thumbnail: existing.video_thumbnail, // URL assumed safe, optionally sanitize
+        views: existing.video_views,
+        likes: existing.video_likes,
+        date: sanitizeHtml(existing.video_date || ""),
+      };
+
       return NextResponse.json({
-        transcript: existing.transcript_text,
-        metadata: {
-          title: existing.video_title,
-          channel: existing.video_channel,
-          thumbnail: existing.video_thumbnail,
-          views: existing.video_views,
-          likes: existing.video_likes,
-          date: existing.video_date,
-        },
+        transcript: safeTranscript,
+        metadata: safeMetadata,
         source: existing.transcript_source,
         message: "Transcript already exists.",
       });
@@ -79,18 +87,34 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: "Failed to fetch transcript" }, { status: 500 });
     }
 
-    // Save transcript via utility function
+    // Sanitize metadata fields
+    const safeMetadata = {
+      title: sanitizeHtml(metadata.title || ""),
+      channel: sanitizeHtml(metadata.channel || ""),
+      thumbnail: metadata.thumbnail,
+      views: metadata.views,
+      date: sanitizeHtml(metadata.date || ""),
+    };
+
+    // Sanitize transcript text to strip any HTML tags
+    const safeTranscript = sanitizeHtml(transcript, {
+      allowedTags: [],
+      allowedAttributes: {},
+    });
+
+    // Save transcript via utility function with sanitized data
     await saveTranscriptToSupabase({
       userId: user?.id || null,
       guestId: guestId || null,
       videoId,
       url,
-      metadata,
-      transcript,
+      metadata: safeMetadata,
+      transcript: safeTranscript,
       source,
     });
 
-    return NextResponse.json({ transcript, metadata, source });
+    // Return sanitized transcript and metadata
+    return NextResponse.json({ transcript: safeTranscript, metadata: safeMetadata, source });
   } catch (error: any) {
     console.error("Transcription failed:", error.message);
 

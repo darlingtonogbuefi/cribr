@@ -1,6 +1,7 @@
 // src/lib/transcript/saveTranscriptToSupabase.ts
 
 import { createServerSupabaseClient } from '@/lib/supabaseServer'
+import sanitizeHtml from 'sanitize-html'
 
 type Metadata = {
   title: string
@@ -31,17 +32,28 @@ export async function saveTranscriptToSupabase({
 }: SaveTranscriptParams) {
   const supabase = createServerSupabaseClient()
 
+  // Sanitize metadata fields and transcript
+  const safeMetadata = {
+    title: sanitizeHtml(metadata.title || '', { allowedTags: [], allowedAttributes: {} }),
+    channel: sanitizeHtml(metadata.channel || '', { allowedTags: [], allowedAttributes: {} }),
+    thumbnail: metadata.thumbnail, // usually a URL, sanitize if needed
+    views: metadata.views,
+    date: sanitizeHtml(metadata.date || '', { allowedTags: [], allowedAttributes: {} }),
+  }
+
+  const safeTranscript = sanitizeHtml(transcript || '', { allowedTags: [], allowedAttributes: {} })
+
   if (userId) {
     const { error } = await supabase.from('transcripts').insert({
       user_id: userId,
       video_id: videoId,
       video_url: url,
-      video_title: metadata.title,
-      video_channel: metadata.channel,
-      video_thumbnail: metadata.thumbnail,
-      video_views: metadata.views,
-      video_date: metadata.date,
-      transcript_text: transcript,
+      video_title: safeMetadata.title,
+      video_channel: safeMetadata.channel,
+      video_thumbnail: safeMetadata.thumbnail,
+      video_views: safeMetadata.views,
+      video_date: safeMetadata.date,
+      transcript_text: safeTranscript,
       transcript_source: source,
     })
 
@@ -57,12 +69,12 @@ export async function saveTranscriptToSupabase({
       guest_id: guestId,
       video_id: videoId,
       video_url: url,
-      video_title: metadata.title,
-      video_channel: metadata.channel,
-      video_thumbnail: metadata.thumbnail,
-      video_views: metadata.views,
-      video_date: metadata.date,
-      transcript_text: transcript,
+      video_title: safeMetadata.title,
+      video_channel: safeMetadata.channel,
+      video_thumbnail: safeMetadata.thumbnail,
+      video_views: safeMetadata.views,
+      video_date: safeMetadata.date,
+      transcript_text: safeTranscript,
       transcript_source: source,
     })
 
