@@ -4,6 +4,7 @@
 import { NextResponse } from "next/server";
 import { createClient } from "@supabase/supabase-js";
 import sanitizeHtml from "sanitize-html";
+import { extractVideoId } from "@/lib/transcript/extractVideoId";
 
 const supabase = createClient(
   process.env.NEXT_PUBLIC_SUPABASE_URL!,
@@ -20,7 +21,6 @@ export async function GET(req: Request) {
 
   const allowedFormats = ["txt", "json", "srt", "vtt", "md", "csv"];
   if (!allowedFormats.includes(format)) {
-    console.error("Invalid format:", format);
     return NextResponse.json(
       {
         error: `Invalid format '${format}'. Allowed: ${allowedFormats.join(", ")}`,
@@ -30,7 +30,6 @@ export async function GET(req: Request) {
   }
 
   if (!id && !rawUrl) {
-    console.error("Missing both id and url");
     return NextResponse.json(
       { error: "Missing required parameter: id or url" },
       { status: 400 }
@@ -45,43 +44,40 @@ export async function GET(req: Request) {
       .eq("id", id)
       .maybeSingle();
   } else {
-    const url = decodeURIComponent(rawUrl!);
+    let videoId;
+    try {
+      videoId = extractVideoId(decodeURIComponent(rawUrl!));
+    } catch {
+      return NextResponse.json({ error: "Invalid YouTube URL" }, { status: 400 });
+    }
     query = supabase
       .from("transcripts")
       .select("transcript_text, video_title")
-      .eq("video_url", url)
+      .eq("video_id", videoId)
       .order("created_at", { ascending: false })
       .limit(1)
       .maybeSingle();
   }
 
   const { data, error } = await query;
-  console.log("Supabase query:", { data, error });
 
   if (error) {
-    console.error("Supabase error:", error);
     return NextResponse.json({ error: "Database error" }, { status: 500 });
   }
 
   if (!data) {
-    console.warn("No transcript found");
     return NextResponse.json({ error: "Transcript not found" }, { status: 404 });
   }
 
   const { transcript_text, video_title } = data;
-
-  // Sanitize transcript text (strip all HTML tags)
   const safeTranscript = sanitizeHtml(transcript_text, {
     allowedTags: [],
     allowedAttributes: {},
   });
 
-  // Sanitize video title for filename (replace invalid chars, limit length)
   const safeTitle = (video_title || "transcript")
     .replace(/[^\w\d]/g, "_")
     .slice(0, 100);
-
-  const baseFilename = safeTitle;
 
   let content = safeTranscript;
   let mime = "text/plain";
@@ -112,7 +108,7 @@ export async function GET(req: Request) {
   return new NextResponse(content, {
     headers: {
       "Content-Type": mime,
-      "Content-Disposition": `attachment; filename="${baseFilename}.${format}"`,
+      "Content-Disposition": `attachment; filename="${safeTitle}.${format}"`,
     },
   });
 }
@@ -136,6 +132,5 @@ function formatTime(seconds: number): string {
   const hrs = String(Math.floor(seconds / 3600)).padStart(2, "0");
   const mins = String(Math.floor((seconds % 3600) / 60)).padStart(2, "0");
   const secs = String(Math.floor(seconds % 60)).padStart(2, "0");
-  const millis = "000";
-  return `${hrs}:${mins}:${secs},${millis}`;
+  return `${hrs}:${mins}:${secs},000`;
 }

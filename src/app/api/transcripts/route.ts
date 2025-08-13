@@ -2,7 +2,7 @@
 
 
 import { NextResponse } from "next/server";
-import { createServerSupabaseClient } from "@/lib/supabaseServer";  // fixed import
+import { createServerSupabaseClient } from "@/lib/supabaseServer";
 import { extractVideoId } from "@/lib/transcript/extractVideoId";
 import { getYouTubeMetadata } from "@/lib/fetchYouTubeMetadata";
 import { getTranscriptFromProviders } from "@/lib/transcript/getTranscriptFromProviders";
@@ -24,7 +24,7 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: "Invalid YouTube URL" }, { status: 400 });
     }
 
-    const supabase = createServerSupabaseClient(); // use server client here
+    const supabase = createServerSupabaseClient();
 
     const {
       data: { user },
@@ -32,7 +32,6 @@ export async function POST(request: Request) {
 
     const videoId = extractVideoId(url);
 
-    // Check if transcript already exists
     let existingArray;
     if (user?.id) {
       const { data } = await supabase
@@ -57,7 +56,6 @@ export async function POST(request: Request) {
     const existing = existingArray?.[0];
 
     if (existing) {
-      // Sanitize existing transcript and metadata before returning
       const safeTranscript = sanitizeHtml(existing.transcript_text, {
         allowedTags: [],
         allowedAttributes: {},
@@ -65,7 +63,7 @@ export async function POST(request: Request) {
       const safeMetadata = {
         title: sanitizeHtml(existing.video_title || ""),
         channel: sanitizeHtml(existing.video_channel || ""),
-        thumbnail: existing.video_thumbnail, // URL assumed safe, optionally sanitize
+        thumbnail: existing.video_thumbnail,
         views: existing.video_views,
         likes: existing.video_likes,
         date: sanitizeHtml(existing.video_date || ""),
@@ -79,7 +77,6 @@ export async function POST(request: Request) {
       });
     }
 
-    // No existing transcript found — generate new one
     const metadata = await getYouTubeMetadata(url);
     const { text: transcript, source } = await getTranscriptFromProviders(videoId, url);
 
@@ -87,7 +84,6 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: "Failed to fetch transcript" }, { status: 500 });
     }
 
-    // Sanitize metadata fields
     const safeMetadata = {
       title: sanitizeHtml(metadata.title || ""),
       channel: sanitizeHtml(metadata.channel || ""),
@@ -96,13 +92,11 @@ export async function POST(request: Request) {
       date: sanitizeHtml(metadata.date || ""),
     };
 
-    // Sanitize transcript text to strip any HTML tags
     const safeTranscript = sanitizeHtml(transcript, {
       allowedTags: [],
       allowedAttributes: {},
     });
 
-    // Save transcript via utility function with sanitized data
     await saveTranscriptToSupabase({
       userId: user?.id || null,
       guestId: guestId || null,
@@ -113,7 +107,6 @@ export async function POST(request: Request) {
       source,
     });
 
-    // Return sanitized transcript and metadata
     return NextResponse.json({ transcript: safeTranscript, metadata: safeMetadata, source });
   } catch (error: any) {
     console.error("Transcription failed:", error.message);
