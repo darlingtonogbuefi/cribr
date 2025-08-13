@@ -17,7 +17,7 @@ import { createClient } from "../../supabase/server";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "Cribr - Generate precise transcriptions from YouTube videos",
+  title: "Cribr - Generate transcripts from YouTube videos",
   description: "Get precise transcriptions from YouTube videos",
   icons: {
     icon: [
