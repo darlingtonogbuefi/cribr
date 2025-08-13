@@ -18,7 +18,7 @@ const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
   title: "Cribr",
-  description: "A modern full-stack starter template powered by Next.js",
+  description: "Get precise transcriptions from YouTube videos",
   icons: {
     icon: [
       { url: "/favicon.ico" },
