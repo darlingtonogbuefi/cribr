@@ -53,7 +53,7 @@ export default function Hero({ userId = null }: HeroProps) {
                 href="#features"
                 className="inline-flex min-w-[230px] justify-center items-center px-8 py-4 text-white bg-red-600 rounded-lg hover:bg-red-700 transition-colors text-lg font-medium"
               >
-                Dearest Yetunde
+                See Features
                 <ArrowUpRight className="ml-2 w-5 h-5" />
               </Link>
             </div>
